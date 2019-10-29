@@ -1,14 +1,32 @@
 import * as React from 'react';
-import classes from 'Controls.module.scss'
+import Control from './components/Control'
+import classes from './Controls.module.scss'
 
+type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+
+const controls :{label: string, type: Ingredient}[] = [
+  {label: 'Salad', type: 'salad'},
+  {label: 'Bacon', type: 'bacon'},
+  {label: 'Cheese', type: 'cheese'},
+  {label: 'Meat', type: 'meat'},
+]
 
 export interface IControlsProps {
+  ingredientAdded: (type: Ingredient) => void,
+  ingredientRemoved: (type: Ingredient) => void,
 }
 
 export default function Controls (props: IControlsProps) {
   return (
-    <div>
-
+    <div className={classes.Controls}>
+      {controls.map(item =>
+        <Control
+          key={item.label}
+          label={item.label}
+          added={() => props.ingredientAdded(item.type)}
+          removed={() => props.ingredientRemoved(item.type)}
+        />
+      )}
     </div>
   );
 }
