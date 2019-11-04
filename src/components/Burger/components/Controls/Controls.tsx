@@ -14,11 +14,13 @@ const controls :{label: string, type: Ingredient}[] = [
 export interface IControlsProps {
   ingredientAdded: (type: Ingredient) => void,
   ingredientRemoved: (type: Ingredient) => void,
+  price: number,
 }
 
 export default function Controls (props: IControlsProps) {
   return (
     <div className={classes.Controls}>
+      <p>Current price: <strong>{props.price.toFixed(2)}$</strong></p>
       {controls.map(item =>
         <Control
           key={item.label}

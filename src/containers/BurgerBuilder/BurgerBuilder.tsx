@@ -53,6 +53,7 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
         <Controls
           ingredientAdded={this.addIngredient}
           ingredientRemoved={this.removeIngredient}
+          price={this.state.totalPrice}
         />
       </Fragment>
     );
