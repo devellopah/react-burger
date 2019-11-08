@@ -29,6 +29,7 @@ export default function Controls (props: IControlsProps) {
           removed={() => props.ingredientRemoved(item.type)}
         />
       )}
+      <button disabled={!props.price} className={classes.OrderButton}>Order now</button>
     </div>
   );
 }
