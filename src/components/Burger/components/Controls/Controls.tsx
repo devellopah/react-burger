@@ -14,7 +14,9 @@ const controls :{label: string, type: Ingredient}[] = [
 export interface IControlsProps {
   ingredientAdded: (type: Ingredient) => void,
   ingredientRemoved: (type: Ingredient) => void,
+  ordered: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   price: number,
+  isPurchasing: boolean,
 }
 
 export default function Controls (props: IControlsProps) {
@@ -29,7 +31,13 @@ export default function Controls (props: IControlsProps) {
           removed={() => props.ingredientRemoved(item.type)}
         />
       )}
-      <button disabled={!props.price} className={classes.OrderButton}>Order now</button>
+      <button
+        disabled={!props.price}
+        className={classes.OrderButton}
+        onClick={props.ordered}
+      >
+        Order now
+      </button>
     </div>
   );
 }

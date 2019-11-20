@@ -18,6 +18,7 @@ export interface IBurgerBuilderProps {
 export interface IBurgerBuilderState {
   ingredients: { [k in Ingredient]: number },
   totalPrice: number,
+  isPurchasing: boolean,
 }
 
 export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
@@ -30,6 +31,7 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
       meat: 0,
     },
     totalPrice: 0,
+    isPurchasing: false,
   }
 
   addIngredient = (type :Ingredient) => {
@@ -48,10 +50,14 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
       this.setState({ ingredients, totalPrice })
   }
 
+  purchaseHandler = () => {
+    this.setState({ isPurchasing: true })
+  }
+
   public render() {
     return (
       <Fragment>
-        <Modal>
+        <Modal show={this.state.isPurchasing}>
           <OrderSummary ingredients={this.state.ingredients} />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
@@ -59,6 +65,8 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
           ingredientAdded={this.addIngredient}
           ingredientRemoved={this.removeIngredient}
           price={this.state.totalPrice}
+          isPurchasing={this.state.isPurchasing}
+          ordered={this.purchaseHandler}
         />
       </Fragment>
     );
