@@ -1,8 +1,10 @@
-import * as React from 'react';
+import React, { Fragment } from 'react';
+import Backdrop from '../Backdrop'
 import classes from './Modal.module.scss'
 
 interface IModalProps {
   show: boolean,
+  modalClosed: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
   children: React.ReactElement,
 }
 
@@ -15,12 +17,15 @@ const Modal: React.FunctionComponent<IModalProps> = (props) => {
   }
 
   return (
-    <div
-      className={classes.Modal}
-      style={styles.Modal}
-    >
-      {props.children}
-    </div>
+    <Fragment>
+      <Backdrop clicked={props.modalClosed} show={props.show} />
+      <div
+        className={classes.Modal}
+        style={styles.Modal}
+      >
+        {props.children}
+      </div>
+    </Fragment>
   );
 };
 
