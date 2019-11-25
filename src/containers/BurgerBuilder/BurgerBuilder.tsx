@@ -58,11 +58,19 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
     this.setState({ isPurchasing: false })
   }
 
+  purchaseContinueHandler = () => {
+    alert('Continue');
+  }
+
   public render() {
     return (
       <Fragment>
         <Modal show={this.state.isPurchasing} modalClosed={this.purchaseCancelHander}>
-          <OrderSummary ingredients={this.state.ingredients} />
+          <OrderSummary
+           ingredients={this.state.ingredients}
+            continued={this.purchaseContinueHandler}
+            cancelled={this.purchaseCancelHander}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <Controls

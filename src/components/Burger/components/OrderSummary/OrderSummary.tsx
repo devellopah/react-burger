@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 import Ingredient from '../Ingredient';
+import Button from '../../../ui/Button'
 
 type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
 
 interface IOrderSummaryProps {
   ingredients: { [k in Ingredient]: number },
+  continued: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  cancelled: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
 const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
@@ -24,6 +27,8 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
         {ingredientSummary}
       </ul>
       <p>Continue to checkout?</p>
+      <Button type="danger" clicked={props.cancelled}>Cancel</Button>
+      <Button type="success" clicked={props.continued}>Continue</Button>
     </Fragment>
   );
 };
