@@ -8,6 +8,7 @@ interface IOrderSummaryProps {
   ingredients: { [k in Ingredient]: number },
   continued: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   cancelled: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  price: number,
 }
 
 const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
@@ -26,6 +27,7 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
       <ul>
         {ingredientSummary}
       </ul>
+      <p>Total price: <strong>{props.price.toFixed(2)}$</strong></p>
       <p>Continue to checkout?</p>
       <Button type="danger" clicked={props.cancelled}>Cancel</Button>
       <Button type="success" clicked={props.continued}>Continue</Button>

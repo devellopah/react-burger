@@ -70,6 +70,7 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
            ingredients={this.state.ingredients}
             continued={this.purchaseContinueHandler}
             cancelled={this.purchaseCancelHander}
+            price={this.state.totalPrice}
           />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
