@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classes from './Toolbar.module.scss'
 import Logo from '../../Logo'
+import NavItems from '../NavItems'
 
 export interface IToolbarProps {
 }
@@ -12,9 +13,7 @@ export default class Toolbar extends React.Component<IToolbarProps> {
         <div>Menu</div>
         <Logo />
         <nav className={classes.nav}>
-          <ul>
-            ...
-          </ul>
+          <NavItems />
         </nav>
       </header>
     );
