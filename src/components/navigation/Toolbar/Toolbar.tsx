@@ -11,7 +11,9 @@ export default class Toolbar extends React.Component<IToolbarProps> {
     return (
       <header className={classes.toolbar}>
         <div>Menu</div>
-        <Logo />
+        <div className={classes.logo}>
+          <Logo />
+        </div>
         <nav className={classes.nav}>
           <NavItems />
         </nav>
