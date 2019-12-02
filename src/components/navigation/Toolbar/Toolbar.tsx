@@ -14,7 +14,7 @@ export default class Toolbar extends React.Component<IToolbarProps> {
         <div className={classes.logo}>
           <Logo />
         </div>
-        <nav className={classes.nav}>
+        <nav className={[classes.nav, classes.desktopOnly].join(' ')}>
           <NavItems />
         </nav>
       </header>
