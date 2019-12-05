@@ -21,6 +21,18 @@
   height: 80%;
 }
 
+.menuToggler {
+  width: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+
+  @media(min-width: 500px) {
+    display: none;
+  }
+}
+
 @media (max-width: 499.98px) {
   .desktopOnly {
     display: none;

@@ -9,7 +9,7 @@ export interface ILayoutProps {
 
 class Layout extends Component<ILayoutProps> {
   state = {
-    isDrawerShowed: true,
+    isDrawerShowed: false,
   }
 
   sideDrawerCloseHandler = () => {
@@ -18,11 +18,17 @@ class Layout extends Component<ILayoutProps> {
     })
   }
 
+  sideDrawerShowHandler = () => {
+    this.setState({
+      isDrawerShowed: true,
+    })
+  }
+
   render() {
 
     return (
       <Fragment>
-        <Toolbar />
+        <Toolbar sideDrawerShowed={this.sideDrawerShowHandler} />
         <SideDrawer
           open={this.state.isDrawerShowed}
           closed={this.sideDrawerCloseHandler}
