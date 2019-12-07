@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import Toolbar from '../navigation/Toolbar'
-import SideDrawer from '../navigation/SideDrawer'
+import Toolbar from '../../components/navigation/Toolbar'
+import SideDrawer from '../../components/navigation/SideDrawer'
 import classes from './Layout.module.scss';
 
 export interface ILayoutProps {
