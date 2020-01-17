@@ -5,6 +5,7 @@ import Burger from '../../components/Burger'
 import Controls from '../../components/Burger/components/Controls'
 import OrderSummary from '../../components/Burger/components/OrderSummary'
 import Modal from '../../components/ui/Modal'
+import WithError from '../../hoc/WithError'
 import axios from '../../axios-orders'
 
 const override = css`
@@ -30,7 +31,7 @@ export interface IBurgerBuilderState {
   loading: boolean,
 }
 
-export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
+class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
 
   state = {
     ingredients: {
@@ -81,7 +82,8 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
           country: 'Russia',
         },
         email: 'test@test.com'
-      }
+      },
+      deliveryMethod: 'fastest',
     }
     axios
       .post('/orders.json', order)
@@ -125,3 +127,5 @@ export default class BurgerBuilder extends Component<IBurgerBuilderProps, IBurge
     )
   }
 }
+
+export default WithError(BurgerBuilder, axios)
