@@ -45,6 +45,13 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
     loading: false,
   }
 
+  // componentDidMount() {
+  //   axios.get('https://react-burger-d4ed6.firebaseio.com/ingredients')
+  //     .then(response => {
+  //       this.setState({ingredients: response.data})
+  //     })
+  // }
+
   addIngredient = (type :Ingredient) => {
     const ingredientOldCount = this.state.ingredients[type]
     const ingredients = { ...this.state.ingredients, [type]: ingredientOldCount + 1 }
