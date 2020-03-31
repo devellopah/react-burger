@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+// import { browserHistory } from 'react-router-dom'
+import { withRouter } from "react-router";
 import { css } from "@emotion/core";
 import HashLoader from "react-spinners/HashLoader";
 import Burger from '../../components/Burger'
@@ -22,6 +24,7 @@ const INGREDIENT_PRICES = {
 
 type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
 export interface IBurgerBuilderProps {
+  history: any,
 }
 
 export interface IBurgerBuilderState {
@@ -95,7 +98,8 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
     axios
       .post('/orders.json', order)
       .then(response => {
-        this.setState({ loading: false, isPurchasing: false })
+        // this.setState({ loading: false, isPurchasing: false })
+        this.props.history.replace({ pathname: "/checkout", state: { loading: false, isPurchasing: false }})
       })
       .catch(error => {
         this.setState({ loading: false, isPurchasing: false })
@@ -135,4 +139,4 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   }
 }
 
-export default WithError(BurgerBuilder, axios)
+export default withRouter(WithError(BurgerBuilder, axios))
