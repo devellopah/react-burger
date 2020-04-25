@@ -81,29 +81,38 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
 
   purchaseContinueHandler = () => {
     this.setState({ loading: true })
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Test name',
-        address: {
-          street: 'Test street',
-          zipCode: '111111',
-          country: 'Russia',
-        },
-        email: 'test@test.com'
-      },
-      deliveryMethod: 'fastest',
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Test name',
+    //     address: {
+    //       street: 'Test street',
+    //       zipCode: '111111',
+    //       country: 'Russia',
+    //     },
+    //     email: 'test@test.com'
+    //   },
+    //   deliveryMethod: 'fastest',
+    // }
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(response => {
+    //     // this.setState({ loading: false, isPurchasing: false })
+    //     this.props.history.replace({ pathname: "/checkout", state: { loading: false, isPurchasing: false }})
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false, isPurchasing: false })
+    //   })
+    const queryParams = []
+    for (let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i as Ingredient]))
     }
-    axios
-      .post('/orders.json', order)
-      .then(response => {
-        // this.setState({ loading: false, isPurchasing: false })
-        this.props.history.replace({ pathname: "/checkout", state: { loading: false, isPurchasing: false }})
-      })
-      .catch(error => {
-        this.setState({ loading: false, isPurchasing: false })
-      })
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryParams.join('&')
+    })
   }
 
   public render() {

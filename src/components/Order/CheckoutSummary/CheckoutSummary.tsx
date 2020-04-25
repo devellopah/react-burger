@@ -3,8 +3,10 @@ import Burger from '../../Burger';
 import Button from '../../ui/Button';
 import classes from './CheckoutSummary.module.scss'
 
+type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+
 interface ICheckoutSummaryProps {
-  ingredients: any,
+  ingredients: { [k in Ingredient]: number },
 }
 
 const CheckoutSummary: React.FunctionComponent<ICheckoutSummaryProps> = (props) => {
