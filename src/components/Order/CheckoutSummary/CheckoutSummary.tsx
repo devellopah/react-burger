@@ -7,6 +7,7 @@ type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
 
 interface ICheckoutSummaryProps {
   ingredients: { [k in Ingredient]: number },
+  clicked: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
 const CheckoutSummary: React.FunctionComponent<ICheckoutSummaryProps> = (props) => {
@@ -17,7 +18,7 @@ const CheckoutSummary: React.FunctionComponent<ICheckoutSummaryProps> = (props) 
         <Burger ingredients={props.ingredients} />
       </div>
       <Button type="danger">Cancel</Button>
-      <Button type="success">Continue</Button>
+      <Button type="success" clicked={props.clicked}>Continue</Button>
     </div>
   );
 };

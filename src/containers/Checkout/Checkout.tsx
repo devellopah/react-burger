@@ -8,6 +8,7 @@ type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
 export interface ICheckoutProps {
   location: any,
   match: any,
+  history: any,
 }
 
 export interface ICheckoutState {
@@ -23,6 +24,9 @@ export default class Checkout extends React.Component<ICheckoutProps> {
       bacon: 1
     }
   }
+  handleSummaryContinue = () => {
+    this.props.history.push({ pathname: `${this.props.history.location.pathname}/contact-data` })
+  }
   componentDidMount() {
     const query = new URLSearchParams(this.props.location.search)
     const ingredients : { [k in Ingredient]?: number } = {}
@@ -30,14 +34,12 @@ export default class Checkout extends React.Component<ICheckoutProps> {
     for(const [key, value] of query.entries()) {
       ingredients[key as Ingredient] = +value
     }
-
     this.setState({ingredients})
   }
   render() {
-    console.log(this.props)
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary ingredients={this.state.ingredients} clicked={this.handleSummaryContinue}/>
         <Route path={this.props.match.path + '/contact-data'} component={ContactData}/>
       </div>
     );
