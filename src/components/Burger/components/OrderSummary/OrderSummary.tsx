@@ -29,8 +29,8 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
       </ul>
       <p>Total price: <strong>{props.price.toFixed(2)}$</strong></p>
       <p>Continue to checkout?</p>
-      <Button type="danger" clicked={props.cancelled}>Cancel</Button>
-      <Button type="success" clicked={props.continued}>Continue</Button>
+      <Button btnType="danger" clicked={props.cancelled}>Cancel</Button>
+      <Button btnType="success" clicked={props.continued}>Continue</Button>
     </Fragment>
   );
 };
