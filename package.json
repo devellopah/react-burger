@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sweetalert/with-react": "^0.1.1",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.4",
     "@types/react": "16.9.2",
@@ -15,7 +16,6 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.1",
     "react-spinners": "^0.8.0",
-    "sweetalert2-react": "^0.8.3",
     "typescript": "3.6.3"
   },
   "scripts": {

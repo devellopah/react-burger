@@ -11,7 +11,7 @@ const NavItems: React.FunctionComponent<INavItemsProps> = (props) => {
         <NavLink exact to="/" className={classes.link} activeClassName={classes.link___active}>Burger Builder</NavLink>
       </li>
       <li className={classes.item}>
-        <NavLink exact to="/checkout" className={classes.link} activeClassName={classes.link___active}>Checkout</NavLink>
+        <NavLink exact to="/orders" className={classes.link} activeClassName={classes.link___active}>Orders</NavLink>
       </li>
     </ul>
   );
