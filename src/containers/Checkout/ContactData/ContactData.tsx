@@ -2,6 +2,7 @@ import * as React from 'react';
 import HashLoader from "react-spinners/HashLoader";
 // import SweetAlert from 'sweetalert2-react';
 import Button from '../../../components/ui/Button'
+import Input from '../../../components/ui/Input'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
 
@@ -60,21 +61,11 @@ export default class extends React.Component<IAppProps> {
       <>
       <h4>Enter your contact data</h4>
       <form>
-        <p>
-          <input type="text" name="name" id="name" placeholder="Your name" />
-        </p>
-        <p>
-          <input type="email" name="email" id="email" placeholder="Your email" />
-        </p>
-        <p>
-          <input type="text" name="street" id="street" placeholder="Street" />
-        </p>
-        <p>
-          <input type="text" name="postal" id="postal" placeholder="Postal code" />
-        </p>
-        <p>
+          <Input inputtype="input" type="text" name="name" id="name" placeholder="Your name" />
+          <Input inputtype="input" type="email" name="email" id="email" placeholder="Your email" />
+          <Input inputtype="input" type="text" name="street" id="street" placeholder="Street" />
+          <Input inputtype="input" type="text" name="postal" id="postal" placeholder="Postal code" />
           <Button type="submit" btnType="success" clicked={this.orderHandler}>Order</Button>
-        </p>
       </form>
       </>
     )
