@@ -2,33 +2,34 @@ import * as React from 'react';
 import classes from './Input.module.scss'
 
 interface IInputProps {
-  inputtype: string,
+  elementType: string,
   type: string,
   name: string,
-  id: string,
-  label?: string,
-  placeholder ?: string,
+  value: string,
+  placeholder: string,
+  changed: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
 }
 
 const Input: React.FunctionComponent<IInputProps> = (props) => {
 
   let inputElement;
 
-  switch(props.inputtype) {
+  switch(props.elementType) {
     case('input') :
-      inputElement = <input className={classes.element} {...props} />
+      inputElement = <input className={classes.element} type={props.type} name={props.name} value={props.value} placeholder={props.placeholder} onChange={props.changed}/>
       break;
     case ('textarea'):
-      inputElement = <textarea className={classes.element} {...props} />
+      inputElement = <textarea className={classes.element} name={props.name} value={props.value} placeholder={props.placeholder} onChange={props.changed}/>
       break;
     default:
-      inputElement = <input className={classes.element} {...props} />
+      inputElement = <input className={classes.element} type={props.type} name={props.name} value={props.value} placeholder={props.placeholder} onChange={props.changed}/>
   }
 
   return (
     <p className={classes.field}>
-      <label className={classes.label}>{props.label}</label>
-      {inputElement}
+      <label className={classes.label}>
+        {inputElement}
+      </label>
     </p>
   );
 };

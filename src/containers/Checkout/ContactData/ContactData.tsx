@@ -3,6 +3,7 @@ import HashLoader from "react-spinners/HashLoader";
 // import SweetAlert from 'sweetalert2-react';
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
+import Select from '../../../components/ui/Select'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
 
@@ -17,33 +18,75 @@ export interface IAppProps {
 
 export default class extends React.Component<IAppProps> {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: '',
-    },
+    orderForm: [
+      {
+        elementType: 'input',
+        type: 'text',
+        name: 'name',
+        placeholder: 'Your Name',
+        value: 'Tony',
+      },
+      {
+        elementType: 'input',
+        type: 'text',
+        name: 'email',
+        placeholder: 'Your email',
+        value: 'tony@montana.com',
+      },
+      {
+        elementType: 'input',
+        type: 'text',
+        name: 'street',
+        placeholder: 'Street',
+        value: 'Montana Street',
+      },
+      {
+        elementType: 'input',
+        type: 'text',
+        name: 'postal',
+        placeholder: 'Your Name',
+        value: 'Postal code',
+      },
+      {
+        elementType: 'select',
+        name: 'deliveryMethod',
+        label: 'Delivery Method',
+        value: 'fastest',
+        options: [
+          {value: 'fastest', text: 'Fastest'},
+          {value: 'cheapest', text: 'Cheapest'},
+        ],
+      },
+    ],
     loading: false,
+  }
+
+  changedHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const updatedOrderForm = this.state.orderForm.concat().map(el => {
+      const isTargetElement = el.name === event.target.getAttribute('name')
+      if (!isTargetElement) return el;
+      el.value = event.target.value
+      return el
+    })
+    this.setState({ orderForm: updatedOrderForm })
   }
 
   orderHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setState({loading: true})
+    const orderData = this.state.orderForm.reduce((obj: {[key: string]: string;}, el) => {
+      const name = el.name
+      const value = el.value
+
+      obj[name] = value
+      return obj
+    }, {})
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Tony',
-        address: {
-          street: 'Montana',
-          zipCode: '777777',
-          country: 'USA',
-        },
-        email: 'tony@montana.com'
-      },
-      deliveryMethod: 'fastest',
+      orderData,
     }
-    console.log('order', order)
+
     axios
       .post('/orders.json', order)
       .then(response => {
@@ -56,15 +99,36 @@ export default class extends React.Component<IAppProps> {
     return false
   }
 
+  componentDidUpdate() {
+    console.log(this.state)
+  }
+
   public render() {
+    const inputs = this.state.orderForm.filter(el => el.elementType !== 'select')
+    const selects = this.state.orderForm.filter(el => el.elementType === 'select')
+
     let form = (
       <>
       <h4>Enter your contact data</h4>
       <form>
-          <Input inputtype="input" type="text" name="name" id="name" placeholder="Your name" />
-          <Input inputtype="input" type="email" name="email" id="email" placeholder="Your email" />
-          <Input inputtype="input" type="text" name="street" id="street" placeholder="Street" />
-          <Input inputtype="input" type="text" name="postal" id="postal" placeholder="Postal code" />
+          {inputs.map(el => <Input
+            key={el.name}
+            elementType={el.elementType}
+            type={el.type!}
+            name={el.name}
+            value={el.value}
+            placeholder={el.placeholder!}
+            changed={this.changedHandler}
+          />)}
+          {selects.map(el => <Select
+            key={el.name}
+            elementType={el.elementType}
+            name={el.name}
+            label={el.label!}
+            value={el.value}
+            options={el.options!}
+            changed={this.changedHandler}
+          />)}
           <Button type="submit" btnType="success" clicked={this.orderHandler}>Order</Button>
       </form>
       </>
