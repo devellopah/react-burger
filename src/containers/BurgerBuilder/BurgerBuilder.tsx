@@ -1,35 +1,35 @@
 import React, { Component, Fragment } from 'react';
 // import { browserHistory } from 'react-router-dom'
 import { withRouter } from "react-router";
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux';
 import { css } from "@emotion/core";
 import HashLoader from "react-spinners/HashLoader";
+
 import Burger from '../../components/Burger'
 import Controls from '../../components/Burger/components/Controls'
 import OrderSummary from '../../components/Burger/components/OrderSummary'
 import Modal from '../../components/ui/Modal'
 import WithError from '../../hoc/WithError'
 import axios from '../../axios-orders'
+import { BurgerState, Ingredient, Ingredients} from '../../store/types'
+import { addIngredient, removeIngredient } from '../../store/actions'
 
 const override = css`
   display: block;
   margin: 0 auto;
 `;
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  cheese: 0.75,
-  meat: 1.5,
-  bacon: 1,
-}
-
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
 export interface IBurgerBuilderProps {
   history: any,
+  ingredients: Ingredients,
+  totalPrice: number,
+  addIngredient: (type: Ingredient) => void,
+  removeIngredient: (type: Ingredient) => void,
+
 }
 
 export interface IBurgerBuilderState {
-  ingredients: { [k in Ingredient]: number },
-  totalPrice: number,
   isPurchasing: boolean,
   loading: boolean,
 }
@@ -37,13 +37,6 @@ export interface IBurgerBuilderState {
 class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
 
   state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0,
-    },
-    totalPrice: 0,
     isPurchasing: false,
     loading: false,
   }
@@ -55,22 +48,6 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   //     })
   // }
 
-  addIngredient = (type :Ingredient) => {
-    const ingredientOldCount = this.state.ingredients[type]
-    const ingredients = { ...this.state.ingredients, [type]: ingredientOldCount + 1 }
-    const totalPrice = this.state.totalPrice + INGREDIENT_PRICES[type]
-
-    this.setState({ ingredients, totalPrice })
-  }
-
-  removeIngredient = (type: Ingredient) => {
-      const ingredientOldCount = this.state.ingredients[type]
-      const ingredients = { ...this.state.ingredients, [type]: ingredientOldCount - 1 }
-      const totalPrice = this.state.totalPrice - INGREDIENT_PRICES[type]
-
-      this.setState({ ingredients, totalPrice })
-  }
-
   purchaseHandler = () => {
     this.setState({ isPurchasing: true })
   }
@@ -81,18 +58,7 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
 
   purchaseContinueHandler = () => {
     this.setState({ loading: true })
-
-    const queryParams = []
-    for (let i in this.state.ingredients) {
-      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i as Ingredient]))
-    }
-
-    queryParams.push('price=' + this.state.totalPrice)
-
-    this.props.history.push({
-      pathname: '/checkout',
-      search: '?' + queryParams.join('&')
-    })
+    this.props.history.push('/checkout')
   }
 
   public render() {
@@ -104,10 +70,10 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
           loading={true}
         />
       : <OrderSummary
-        ingredients={this.state.ingredients}
+        ingredients={this.props.ingredients}
         continued={this.purchaseContinueHandler}
         cancelled={this.purchaseCancelHander}
-        price={this.state.totalPrice}
+        price={this.props.totalPrice}
       />
 
     return (
@@ -115,11 +81,11 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
         <Modal show={this.state.isPurchasing} modalClosed={this.purchaseCancelHander}>
           {orderSummary}
         </Modal>
-        <Burger ingredients={this.state.ingredients} />
+        <Burger ingredients={this.props.ingredients} />
         <Controls
-          ingredientAdded={this.addIngredient}
-          ingredientRemoved={this.removeIngredient}
-          price={this.state.totalPrice}
+          ingredientAdded={this.props.addIngredient}
+          ingredientRemoved={this.props.removeIngredient}
+          price={this.props.totalPrice}
           isPurchasing={this.state.isPurchasing}
           ordered={this.purchaseHandler}
         />
@@ -128,4 +94,14 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   }
 }
 
-export default withRouter(WithError(BurgerBuilder, axios))
+const mapStateToProps = (state: BurgerState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  addIngredient: (ingredient: Ingredient) => dispatch(addIngredient(ingredient)),
+  removeIngredient: (ingredient: Ingredient) => dispatch(removeIngredient(ingredient)),
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WithError(BurgerBuilder, axios)))

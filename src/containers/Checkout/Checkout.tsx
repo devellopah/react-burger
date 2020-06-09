@@ -1,56 +1,47 @@
 import React from 'react';
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux';
+
 import CheckoutSummary from '../../components/Order/CheckoutSummary'
 import ContactData from '../Checkout/ContactData'
-
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+import { BurgerState, Ingredient, Ingredients } from '../../store/types'
+import { addIngredient, removeIngredient } from '../../store/actions'
 
 export interface ICheckoutProps {
   location: any,
   match: any,
   history: any,
+  ingredients: Ingredients,
+  totalPrice: number,
 }
 
-export interface ICheckoutState {
-  ingredients: { [k in Ingredient]: number },
-}
-
-export default class Checkout extends React.Component<ICheckoutProps> {
-  state = {
-    ingredients: {
-      salad: 0,
-      meat: 0,
-      cheese: 0,
-      bacon: 0
-    },
-    price: '',
-  }
+class Checkout extends React.Component<ICheckoutProps> {
   handleSummaryContinue = () => {
     this.props.history.push({ pathname: `${this.props.history.location.pathname}/contact-data` })
   }
-  componentDidMount() {
-    const query = new URLSearchParams(this.props.location.search)
-    const ingredients : { [k in Ingredient]?: number } = {}
-    let price = null
 
-    for(const [key, value] of query.entries()) {
-      if(key === 'price') {
-        price = value
-      } else {
-        ingredients[key as Ingredient] = +value
-      }
-    }
-    this.setState({ingredients, price})
-  }
   render() {
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} clicked={this.handleSummaryContinue}/>
+        <CheckoutSummary ingredients={this.props.ingredients} clicked={this.handleSummaryContinue}/>
         <Route
           path={this.props.match.path + '/contact-data'}
-          render={() => (<ContactData ingredients={this.state.ingredients} price={this.state.price} history={this.props.history} />)}
+          render={() => (<ContactData history={this.props.history} />)}
         />
       </div>
     );
   }
 }
+
+const mapStateToProps = (state: BurgerState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  addIngredient: (ingredient: Ingredient) => dispatch(addIngredient(ingredient)),
+  removeIngredient: (ingredient: Ingredient) => dispatch(removeIngredient(ingredient)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Checkout)

@@ -1,22 +1,25 @@
 import * as React from 'react';
 import HashLoader from "react-spinners/HashLoader";
 // import SweetAlert from 'sweetalert2-react';
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux';
+
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
 import Select from '../../../components/ui/Select'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
-
-
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+import { BurgerState, Ingredients } from '../../../store/types'
+import { resetIngredients } from '../../../store/actions'
 
 export interface IAppProps {
-  ingredients: { [k in Ingredient]: number },
-  price: string,
+  ingredients: Ingredients,
+  totalPrice: number,
   history: any,
+  resetIngredients: () => void,
 }
 
-export default class extends React.Component<IAppProps> {
+class ContactData extends React.Component<IAppProps> {
   state = {
     orderForm: [
       {
@@ -83,24 +86,23 @@ export default class extends React.Component<IAppProps> {
     }, {})
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.price,
+      price: this.props.totalPrice,
       orderData,
     }
 
     axios
       .post('/orders.json', order)
       .then(response => {
+        console.log('response', response)
         this.setState({ loading: false})
+        this.props.resetIngredients()
         this.props.history.replace('/')
       })
       .catch(error => {
+        alert(error)
         this.setState({ loading: false})
       })
     return false
-  }
-
-  componentDidUpdate() {
-    console.log(this.state)
   }
 
   public render() {
@@ -145,3 +147,14 @@ export default class extends React.Component<IAppProps> {
     );
   }
 }
+
+const mapStateToProps = (state: BurgerState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  resetIngredients: () => dispatch(resetIngredients()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
