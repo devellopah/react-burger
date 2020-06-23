@@ -1,49 +1,37 @@
 import * as React from 'react';
+import { connect } from 'react-redux'
 import axios from '../../axios-orders'
 import withError from '../../hoc/WithError'
 import Order from '../../components/Order'
+import * as types from '../../store/actions/types'
+import { AppState } from '../../store'
+import { fetchOrders } from '../../store/actions/'
 
 export interface IOrdersProps {
+  orders: types.Orders,
+  loading: boolean,
+  fetchOrders: typeof fetchOrders,
 }
 
 export interface IOrdersState {
-  orders: any[],
-  loading: boolean,
 }
 
 class Orders extends React.Component<IOrdersProps, IOrdersState> {
-  constructor(props: IOrdersProps) {
-    super(props);
-
-    this.state = {
-      orders: [],
-      loading: true,
-    }
-  }
 
   componentDidMount() {
-    axios.get('/orders.json')
-      .then(res => {
-        const orders = []
-        for(let key in res.data) {
-          orders.push({...res.data[key], id: key})
-        }
-        this.setState({orders, loading: false})
-      })
-      .catch(err => {
-        this.setState({loading: false})
-      })
+    this.props.fetchOrders()
   }
 
   public render() {
+    console.log(this.props.orders)
     return (
       <div>
-        {this.state.orders.map(order =>
+        {this.props.orders.map(order =>
           <Order
             key={order.id}
             price={+order.price}
             ingredients={order.ingredients}
-            name={order.customer.name}
+            name={order.orderData.name}
           />
         )}
       </div>
@@ -51,4 +39,4 @@ class Orders extends React.Component<IOrdersProps, IOrdersState> {
   }
 }
 
-export default withError(Orders, axios)
+export default connect((state: AppState) => ({ ...state.order }), { fetchOrders })(withError(Orders, axios))

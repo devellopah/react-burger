@@ -2,13 +2,14 @@ import * as React from 'react';
 import HashLoader from "react-spinners/HashLoader";
 // import SweetAlert from 'sweetalert2-react';
 import { connect } from 'react-redux'
+import { withRouter } from "react-router";
 
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
 import Select from '../../../components/ui/Select'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
-import { Ingredients, Order } from '../../../store/actions/types'
+import { Ingredients, Order, OrderData } from '../../../store/actions/types'
 import { purchaseBurger } from '../../../store/actions'
 import WithError from '../../../hoc/WithError'
 import { AppState } from '../../../store';
@@ -18,6 +19,7 @@ export interface IAppProps {
   totalPrice: number,
   loading: boolean,
   purchaseBurger: any,
+  history: any,
 }
 
 class ContactData extends React.Component<IAppProps> {
@@ -76,20 +78,21 @@ class ContactData extends React.Component<IAppProps> {
 
   orderHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    const orderData = this.state.orderForm.reduce((obj: {[key: string]: string;}, el) => {
+    const orderData: OrderData = this.state.orderForm.reduce((obj: any, el)  => {
       const name = el.name
       const value = el.value
 
       obj[name] = value
       return obj
     }, {})
-    const order:Order = {
+
+    const order: Order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData,
     }
 
-    this.props.purchaseBurger(order)
+    this.props.purchaseBurger(order, this.props.history)
 
     return false
   }
@@ -139,6 +142,8 @@ const mapStateToProps = (state: AppState) => ({
   loading: state.order.loading,
 })
 
-export default connect(mapStateToProps, {
-  purchaseBurger,
-})(WithError(ContactData, axios))
+export default withRouter(
+  connect(mapStateToProps, {
+    purchaseBurger,
+  })(WithError(ContactData, axios))
+)

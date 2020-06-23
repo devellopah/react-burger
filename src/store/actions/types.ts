@@ -3,6 +3,7 @@ import { ThunkAction } from 'redux-thunk'
 import { AppState } from '../'
 
 export type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+export type Orders = any[]
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   AppState,
@@ -16,10 +17,19 @@ export interface Ingredients {
   meat: number,
 }
 
+export interface OrderData {
+  deliveryMethod: string,
+  email: string,
+  name: string,
+  postal: string,
+  street: string,
+}
+
 export interface Order {
+  id?: string,
   ingredients: Ingredients,
   price: number,
-  orderData: object,
+  orderData: OrderData,
 }
 
 export interface OrderState {
@@ -43,6 +53,10 @@ export const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED'
 export const PURCHASE_BURGER_SUCCESSED = 'PURCHASE_BURGER_SUCCESSED'
 export const PURCHASE_BURGER_FAILED = 'PURCHASE_BURGER_FAILED'
 export const PURCHASE_BURGER_STARTED = 'PURCHASE_BURGER_STARTED'
+
+export const FETCH_ORDERS_SUCCESSED = 'FETCH_ORDERS_SUCCESSED'
+export const FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED'
+export const FETCH_ORDERS_STARTED = 'FETCH_ORDERS_STARTED'
 
 interface addIngredient {
   type: typeof ADD_INGREDIENT,
@@ -78,6 +92,20 @@ interface purchaseBurgerSuccessed {
   id: string,
 }
 
+interface fetchOrdersStarted {
+  type: typeof FETCH_ORDERS_STARTED,
+}
+
+interface fetchOrdersFailed {
+  type: typeof FETCH_ORDERS_FAILED,
+  error: object,
+}
+
+interface fetchOrdersSuccessed {
+  type: typeof FETCH_ORDERS_SUCCESSED,
+  orders: Orders,
+}
+
 export type BuilderAction = addIngredient
   | removeIngredient
   | setIngredients
@@ -86,3 +114,6 @@ export type BuilderAction = addIngredient
 export type OrderAction = purchaseBurgerStarted
   | purchaseBurgerFailed
   | purchaseBurgerSuccessed
+  | fetchOrdersStarted
+  | fetchOrdersSuccessed
+  | fetchOrdersFailed

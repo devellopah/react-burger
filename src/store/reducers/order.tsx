@@ -24,6 +24,22 @@ export default (state = initialState, action: types.OrderAction): types.OrderSta
         ...state,
         loading: false,
       }
+    case types.FETCH_ORDERS_STARTED:
+      return {
+        ...state,
+        loading: true,
+      }
+    case types.FETCH_ORDERS_SUCCESSED:
+      return {
+        ...state,
+        orders: action.orders,
+        loading: false,
+      }
+    case types.FETCH_ORDERS_FAILED:
+      return {
+        ...state,
+        loading: false,
+      }
     default:
       return state
   }
