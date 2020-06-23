@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Toolbar from '../../components/navigation/Toolbar'
 import SideDrawer from '../../components/navigation/SideDrawer'
 import classes from './Layout.module.scss';
@@ -27,7 +27,7 @@ class Layout extends Component<ILayoutProps> {
   render() {
 
     return (
-      <Fragment>
+      <>
         <Toolbar sideDrawerShowed={this.sideDrawerShowHandler} />
         <SideDrawer
           open={this.state.isDrawerShowed}
@@ -36,7 +36,7 @@ class Layout extends Component<ILayoutProps> {
         <main className={classes.content}>
           {this.props.children}
         </main>
-      </Fragment>
+      </>
     );
   }
 }

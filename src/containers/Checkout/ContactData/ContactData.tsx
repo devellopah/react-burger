@@ -2,21 +2,22 @@ import * as React from 'react';
 import HashLoader from "react-spinners/HashLoader";
 // import SweetAlert from 'sweetalert2-react';
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux';
 
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
 import Select from '../../../components/ui/Select'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
-import { BurgerState, Ingredients } from '../../../store/types'
-import { resetIngredients } from '../../../store/actions'
+import { Ingredients, Order } from '../../../store/actions/types'
+import { purchaseBurger } from '../../../store/actions'
+import WithError from '../../../hoc/WithError'
+import { AppState } from '../../../store';
 
 export interface IAppProps {
   ingredients: Ingredients,
   totalPrice: number,
-  history: any,
-  resetIngredients: () => void,
+  loading: boolean,
+  purchaseBurger: any,
 }
 
 class ContactData extends React.Component<IAppProps> {
@@ -61,7 +62,6 @@ class ContactData extends React.Component<IAppProps> {
         ],
       },
     ],
-    loading: false,
   }
 
   changedHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -76,7 +76,6 @@ class ContactData extends React.Component<IAppProps> {
 
   orderHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    this.setState({loading: true})
     const orderData = this.state.orderForm.reduce((obj: {[key: string]: string;}, el) => {
       const name = el.name
       const value = el.value
@@ -84,24 +83,14 @@ class ContactData extends React.Component<IAppProps> {
       obj[name] = value
       return obj
     }, {})
-    const order = {
+    const order:Order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData,
     }
 
-    axios
-      .post('/orders.json', order)
-      .then(response => {
-        console.log('response', response)
-        this.setState({ loading: false})
-        this.props.resetIngredients()
-        this.props.history.replace('/')
-      })
-      .catch(error => {
-        alert(error)
-        this.setState({ loading: false})
-      })
+    this.props.purchaseBurger(order)
+
     return false
   }
 
@@ -109,7 +98,7 @@ class ContactData extends React.Component<IAppProps> {
     const inputs = this.state.orderForm.filter(el => el.elementType !== 'select')
     const selects = this.state.orderForm.filter(el => el.elementType === 'select')
 
-    let form = (
+    const form = (
       <>
       <h4>Enter your contact data</h4>
       <form>
@@ -136,25 +125,20 @@ class ContactData extends React.Component<IAppProps> {
       </>
     )
 
-    if(this.state.loading) {
-      form = <HashLoader css={'margin: auto;'} />
-    }
-
     return (
       <div className={classes.ContactData}>
-        {form}
+        {this.props.loading ? <HashLoader css={'margin: auto;'} /> : form}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state: BurgerState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
+const mapStateToProps = (state: AppState) => ({
+  ingredients: state.builder.ingredients,
+  totalPrice: state.builder.totalPrice,
+  loading: state.order.loading,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  resetIngredients: () => dispatch(resetIngredients()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
+export default connect(mapStateToProps, {
+  purchaseBurger,
+})(WithError(ContactData, axios))

@@ -1,52 +1,50 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 // import { browserHistory } from 'react-router-dom'
 import { withRouter } from "react-router";
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux';
 import { css } from "@emotion/core";
 import HashLoader from "react-spinners/HashLoader";
-
+import axios from '../../axios-orders'
 import Burger from '../../components/Burger'
 import Controls from '../../components/Burger/components/Controls'
 import OrderSummary from '../../components/Burger/components/OrderSummary'
 import Modal from '../../components/ui/Modal'
 import WithError from '../../hoc/WithError'
-import axios from '../../axios-orders'
-import { BurgerState, Ingredient, Ingredients} from '../../store/types'
-import { addIngredient, removeIngredient } from '../../store/actions'
+import { Ingredients } from '../../store/actions/types'
+import { addIngredient, removeIngredient, initIngredients } from '../../store/actions'
+import { AppState } from '../../store';
 
 const override = css`
-  display: block;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export interface IBurgerBuilderProps {
   history: any,
   ingredients: Ingredients,
   totalPrice: number,
-  addIngredient: (type: Ingredient) => void,
-  removeIngredient: (type: Ingredient) => void,
-
+  error: boolean,
+  addIngredient: typeof addIngredient,
+  removeIngredient: typeof removeIngredient,
+  initIngredients: typeof initIngredients,
 }
 
 export interface IBurgerBuilderState {
   isPurchasing: boolean,
-  loading: boolean,
+  // loading: boolean,
 }
 
 class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
 
   state = {
     isPurchasing: false,
-    loading: false,
   }
 
-  // componentDidMount() {
-  //   axios.get('https://react-burger-d4ed6.firebaseio.com/ingredients')
-  //     .then(response => {
-  //       this.setState({ingredients: response.data})
-  //     })
-  // }
+  componentDidMount() {
+    this.props.initIngredients();
+  }
 
   purchaseHandler = () => {
     this.setState({ isPurchasing: true })
@@ -57,51 +55,49 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   }
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true })
     this.props.history.push('/checkout')
   }
 
   public render() {
-    const orderSummary = this.state.loading
-      ? <HashLoader
-          css={override}
-          size={100}
-          color={"#8F5E1E"}
-          loading={true}
-        />
-      : <OrderSummary
+    const orderSummary =
+      <OrderSummary
         ingredients={this.props.ingredients}
         continued={this.purchaseContinueHandler}
         cancelled={this.purchaseCancelHander}
         price={this.props.totalPrice}
       />
+    const content = <>
+      <Burger ingredients={this.props.ingredients} />
+      <Controls
+        ingredientAdded={this.props.addIngredient}
+        ingredientRemoved={this.props.removeIngredient}
+        price={this.props.totalPrice}
+        isPurchasing={this.state.isPurchasing}
+        ordered={this.purchaseHandler}
+      />
+    </>
+    const modal =
+      <Modal show={this.state.isPurchasing} modalClosed={this.purchaseCancelHander}>
+        {orderSummary}
+      </Modal>
 
     return (
-      <Fragment>
-        <Modal show={this.state.isPurchasing} modalClosed={this.purchaseCancelHander}>
-          {orderSummary}
-        </Modal>
-        <Burger ingredients={this.props.ingredients} />
-        <Controls
-          ingredientAdded={this.props.addIngredient}
-          ingredientRemoved={this.props.removeIngredient}
-          price={this.props.totalPrice}
-          isPurchasing={this.state.isPurchasing}
-          ordered={this.purchaseHandler}
+      <>
+        {this.props.ingredients && modal}
+        <HashLoader
+          css={override}
+          size={100}
+          color={"#703b09"}
+          loading={!this.props.ingredients}
         />
-      </Fragment>
+        {this.props.ingredients && content}
+      </>
     )
   }
 }
 
-const mapStateToProps = (state: BurgerState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
-})
+const mapStateToProps = (state:AppState) => ({ ...state.builder })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addIngredient: (ingredient: Ingredient) => dispatch(addIngredient(ingredient)),
-  removeIngredient: (ingredient: Ingredient) => dispatch(removeIngredient(ingredient)),
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WithError(BurgerBuilder, axios)))
+export default withRouter(connect(
+  mapStateToProps, { addIngredient, removeIngredient, initIngredients }
+)(WithError(BurgerBuilder, axios)))

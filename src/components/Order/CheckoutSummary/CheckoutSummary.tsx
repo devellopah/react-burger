@@ -2,11 +2,10 @@ import React from 'react';
 import Burger from '../../Burger';
 import Button from '../../ui/Button';
 import classes from './CheckoutSummary.module.scss'
-
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+import { Ingredients } from '../../../store/actions/types'
 
 interface ICheckoutSummaryProps {
-  ingredients: { [k in Ingredient]: number },
+  ingredients: Ingredients,
   clicked: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 

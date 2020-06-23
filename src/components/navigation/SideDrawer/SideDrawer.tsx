@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Logo from '../../Logo'
 import NavItems from '../NavItems'
 import classes from './SideDrawer.module.scss'
@@ -17,7 +17,7 @@ const SideDrawer: React.FunctionComponent<ISideDrawerProps> = (props) => {
    : attachedClasses.push(classes.close)
 
   return (
-    <Fragment>
+    <>
       <Backdrop show={props.open} clicked={props.closed} />
       <div className={attachedClasses.join(' ')}>
         <div className={classes.logo}>
@@ -27,7 +27,7 @@ const SideDrawer: React.FunctionComponent<ISideDrawerProps> = (props) => {
           <NavItems />
         </nav>
       </div>
-    </Fragment>
+    </>
   );
 };
 

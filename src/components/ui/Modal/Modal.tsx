@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Backdrop from '../Backdrop'
 import classes from './Modal.module.scss'
 
@@ -17,7 +17,7 @@ const Modal: React.FunctionComponent<IModalProps> = (props) => {
   }
 
   return (
-    <Fragment>
+    <>
       <Backdrop clicked={props.modalClosed} show={props.show} />
       <div
         className={classes.Modal}
@@ -25,7 +25,7 @@ const Modal: React.FunctionComponent<IModalProps> = (props) => {
       >
         {props.children}
       </div>
-    </Fragment>
+    </>
   );
 };
 

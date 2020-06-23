@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary'
 import ContactData from '../Checkout/ContactData'
-import { BurgerState, Ingredient, Ingredients } from '../../store/types'
+import { Ingredients } from '../../store/actions/types'
 import { addIngredient, removeIngredient } from '../../store/actions'
+import { AppState } from '../../store';
 
 export interface ICheckoutProps {
   location: any,
@@ -22,26 +22,19 @@ class Checkout extends React.Component<ICheckoutProps> {
   }
 
   render() {
-    return (
-      <div>
+    console.log(this.props.ingredients);
+    return this.props.ingredients ? (
+      <>
         <CheckoutSummary ingredients={this.props.ingredients} clicked={this.handleSummaryContinue}/>
-        <Route
-          path={this.props.match.path + '/contact-data'}
-          render={() => (<ContactData history={this.props.history} />)}
-        />
-      </div>
-    );
+        <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
+      </>
+    ) : <Redirect to="/" />;
   }
 }
 
-const mapStateToProps = (state: BurgerState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
+const mapStateToProps = (state: AppState) => ({
+  ingredients: state.builder.ingredients!,
+  totalPrice: state.builder.totalPrice,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addIngredient: (ingredient: Ingredient) => dispatch(addIngredient(ingredient)),
-  removeIngredient: (ingredient: Ingredient) => dispatch(removeIngredient(ingredient)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout)
+export default connect(mapStateToProps, { addIngredient, removeIngredient })(Checkout)

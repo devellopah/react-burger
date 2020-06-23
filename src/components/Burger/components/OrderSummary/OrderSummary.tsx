@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
-import Ingredient from '../Ingredient';
+import React from 'react';
+// import Ingredient from '../Ingredient';
 import Button from '../../../ui/Button'
 
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+import { Ingredient, Ingredients } from '../../../../store/actions/types'
 
 interface IOrderSummaryProps {
-  ingredients: { [k in Ingredient]: number },
+  ingredients: Ingredients,
   continued: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   cancelled: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   price: number,
@@ -14,14 +14,14 @@ interface IOrderSummaryProps {
 const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
   const ingredientSummary = Object.keys(props.ingredients)
     .map((key) => {
-      const ingredient = key as Ingredient
-      return (
-        <li key={ingredient}><span>{ingredient}</span>: {props.ingredients[ingredient]}</li>
-      )
-    })
+        const ingredient = key as Ingredient
+        return (
+          <li key={ingredient}><span>{ingredient}</span>: {props.ingredients[ingredient]}</li>
+        )
+      })
 
   return (
-    <Fragment>
+    <>
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients:</p>
       <ul>
@@ -31,7 +31,7 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
       <p>Continue to checkout?</p>
       <Button btnType="danger" clicked={props.cancelled}>Cancel</Button>
       <Button btnType="success" clicked={props.continued}>Continue</Button>
-    </Fragment>
+    </>
   );
 };
 
