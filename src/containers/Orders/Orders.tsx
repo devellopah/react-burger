@@ -23,7 +23,6 @@ class Orders extends React.Component<IOrdersProps, IOrdersState> {
   }
 
   public render() {
-    console.log(this.props.orders)
     return (
       <div>
         {this.props.orders.map(order =>

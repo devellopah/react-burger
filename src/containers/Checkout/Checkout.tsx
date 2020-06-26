@@ -22,7 +22,6 @@ class Checkout extends React.Component<ICheckoutProps> {
   }
 
   render() {
-    console.log(this.props.ingredients);
     return this.props.ingredients ? (
       <>
         <CheckoutSummary ingredients={this.props.ingredients} clicked={this.handleSummaryContinue}/>

@@ -3,18 +3,12 @@ import classes from './Button.module.scss';
 
 interface IButtonProps {
   clicked?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-  type?: any,
   btnType: string,
 }
 
-const Button: React.FunctionComponent<IButtonProps> = (props) => {
+const Button: React.FunctionComponent<IButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ btnType, clicked, ...props }) => {
   return (
-    <button
-      type={props.type}
-      onClick={props.clicked}
-      className={[classes.Button, classes[props.btnType]].join(' ')}>
-      {props.children}
-    </button>
+    <button {...props} className={[classes.Button, classes[btnType]].join(' ')} onClick={clicked} />
   );
 };
 

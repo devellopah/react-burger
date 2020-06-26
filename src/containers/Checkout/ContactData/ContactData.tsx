@@ -1,138 +1,126 @@
-import * as React from 'react';
+import React from 'react';
 import HashLoader from "react-spinners/HashLoader";
-// import SweetAlert from 'sweetalert2-react';
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
+import * as Yup from 'yup';
+import { Formik, Form, Field, FieldProps } from 'formik';
 
 import Button from '../../../components/ui/Button'
-import Input from '../../../components/ui/Input'
-import Select from '../../../components/ui/Select'
 import classes from './ContactData.module.scss'
 import axios from '../../../axios-orders'
-import { Ingredients, Order, OrderData } from '../../../store/actions/types'
+import { Ingredients, Order } from '../../../store/actions/types'
 import { purchaseBurger } from '../../../store/actions'
 import WithError from '../../../hoc/WithError'
 import { AppState } from '../../../store';
 
-export interface IAppProps {
+interface IAppProps {
   ingredients: Ingredients,
   totalPrice: number,
   loading: boolean,
-  purchaseBurger: any,
+  purchaseBurger: typeof purchaseBurger,
   history: any,
 }
 
+const orderDataSchema = Yup.object().shape({
+  name: Yup.string().min(2, 'Too Short!').defined(),
+  email: Yup.string().email('Invalid email').defined(),
+  street: Yup.string().defined(),
+  postal: Yup.number().defined(),
+  deliveryMethod: Yup.string().oneOf(['fastest', 'cheapest']).defined()
+})
+
+type MyFormValues = Yup.InferType<typeof orderDataSchema>
+
 class ContactData extends React.Component<IAppProps> {
-  state = {
-    orderForm: [
-      {
-        elementType: 'input',
-        type: 'text',
-        name: 'name',
-        placeholder: 'Your Name',
-        value: 'Tony',
-      },
-      {
-        elementType: 'input',
-        type: 'text',
-        name: 'email',
-        placeholder: 'Your email',
-        value: 'tony@montana.com',
-      },
-      {
-        elementType: 'input',
-        type: 'text',
-        name: 'street',
-        placeholder: 'Street',
-        value: 'Montana Street',
-      },
-      {
-        elementType: 'input',
-        type: 'text',
-        name: 'postal',
-        placeholder: 'Your Name',
-        value: 'Postal code',
-      },
-      {
-        elementType: 'select',
-        name: 'deliveryMethod',
-        label: 'Delivery Method',
-        value: 'fastest',
-        options: [
-          {value: 'fastest', text: 'Fastest'},
-          {value: 'cheapest', text: 'Cheapest'},
-        ],
-      },
-    ],
-  }
-
-  changedHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const updatedOrderForm = this.state.orderForm.concat().map(el => {
-      const isTargetElement = el.name === event.target.getAttribute('name')
-      if (!isTargetElement) return el;
-      el.value = event.target.value
-      return el
-    })
-    this.setState({ orderForm: updatedOrderForm })
-  }
-
-  orderHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-    const orderData: OrderData = this.state.orderForm.reduce((obj: any, el)  => {
-      const name = el.name
-      const value = el.value
-
-      obj[name] = value
-      return obj
-    }, {})
-
-    const order: Order = {
-      ingredients: this.props.ingredients,
-      price: this.props.totalPrice,
-      orderData,
+  render() {
+    const initialValues: MyFormValues = {
+      name: 'Test',
+      email: 'test@test.com',
+      street: 'test street',
+      postal: 123456,
+      deliveryMethod: 'fastest',
     }
-
-    this.props.purchaseBurger(order, this.props.history)
-
-    return false
-  }
-
-  public render() {
-    const inputs = this.state.orderForm.filter(el => el.elementType !== 'select')
-    const selects = this.state.orderForm.filter(el => el.elementType === 'select')
-
-    const form = (
-      <>
-      <h4>Enter your contact data</h4>
-      <form>
-          {inputs.map(el => <Input
-            key={el.name}
-            elementType={el.elementType}
-            type={el.type!}
-            name={el.name}
-            value={el.value}
-            placeholder={el.placeholder!}
-            changed={this.changedHandler}
-          />)}
-          {selects.map(el => <Select
-            key={el.name}
-            elementType={el.elementType}
-            name={el.name}
-            label={el.label!}
-            value={el.value}
-            options={el.options!}
-            changed={this.changedHandler}
-          />)}
-          <Button type="submit" btnType="success" clicked={this.orderHandler}>Order</Button>
-      </form>
-      </>
-    )
-
     return (
       <div className={classes.ContactData}>
-        {this.props.loading ? <HashLoader css={'margin: auto;'} /> : form}
+        {this.props.loading
+          ? <HashLoader css={'margin: auto;'} />
+          : <Formik
+              initialValues={initialValues}
+              validationSchema={orderDataSchema}
+              onSubmit={(values, actions) => {
+                actions.setSubmitting(false);
+                const order: Order = { ingredients: this.props.ingredients, price: this.props.totalPrice, orderData: values }
+                this.props.purchaseBurger(order, this.props.history)
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form translate="yes">
+                  <Field name="name">
+                    {({ field, form: { isSubmitting }, meta }: FieldProps) => (
+                      <div>
+                        <label htmlFor={field.name}>Name</label>
+                        <input type="text" {...field} placeholder="Your Name" id={field.name} disabled={isSubmitting} />
+                        {meta.touched && meta.error && (
+                          <div className="error">{meta.error}</div>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                  <Field name="email">
+                    {({ field, form: { isSubmitting }, meta }: FieldProps) => (
+                      <div>
+                        <label htmlFor={field.name}>Email</label>
+                        <input type="email" {...field} placeholder="Your Email" id={field.name} disabled={isSubmitting} />
+                        {meta.touched && meta.error && (
+                          <div className="error">{meta.error}</div>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                  <Field name="street">
+                    {({ field, form: { isSubmitting }, meta }: FieldProps) => (
+                      <div>
+                        <label htmlFor={field.name}>Address</label>
+                        <input type="text" {...field} placeholder="Your Address" id={field.name} disabled={isSubmitting} />
+                        {meta.touched && meta.error && (
+                          <div className="error">{meta.error}</div>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                  <Field name="postal">
+                    {({ field, form: { isSubmitting }, meta }: FieldProps) => (
+                      <div>
+                        <label htmlFor={field.name}>Postal</label>
+                        <input type="text" {...field} placeholder="Your Postal" id={field.name} disabled={isSubmitting} />
+                          {meta.touched && meta.error && (
+                            <div className="error">{meta.error}</div>
+                          )}
+                      </div>
+                    )}
+                  </Field>
+                  <Field name="deliveryMethod">
+                  {({ field, form: { isSubmitting }, meta }: FieldProps) => (
+                    <div>
+                      <label htmlFor={field.name}>Delivery method</label>
+                      <select {...field} id={field.name} disabled={isSubmitting}>
+                        <option value="fastest">fastest</option>
+                        <option value="cheapest">cheapest</option>
+                      </select>
+                      {meta.touched && meta.error && (
+                        <div className="error">{meta.error}</div>
+                      )}
+                    </div>
+                  )}
+                  </Field>
+                  <Button type="submit" disabled={isSubmitting} btnType="success">Order</Button>
+                  {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+                </Form>
+              )}
+            </Formik>}
       </div>
     );
+
   }
 }
 

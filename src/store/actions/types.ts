@@ -29,7 +29,7 @@ export interface Order {
   id?: string,
   ingredients: Ingredients,
   price: number,
-  orderData: OrderData,
+  orderData: object,
 }
 
 export interface OrderState {
