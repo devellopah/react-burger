@@ -43,6 +43,13 @@ export interface BuilderState {
   error: boolean,
 }
 
+export interface AuthState {
+  idToken: string | null,
+  localId: string | null,
+  error: object | null,
+  isLoading: boolean,
+}
+
 export const ADD_INGREDIENT = 'ADD_INGREDIENT'
 export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT'
 export const UPDATE_TOTAL_PRICE = 'UPDATE_TOTAL_PRICE'
@@ -57,6 +64,16 @@ export const PURCHASE_BURGER_STARTED = 'PURCHASE_BURGER_STARTED'
 export const FETCH_ORDERS_SUCCESSED = 'FETCH_ORDERS_SUCCESSED'
 export const FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED'
 export const FETCH_ORDERS_STARTED = 'FETCH_ORDERS_STARTED'
+
+export const AUTH_SUCCESSED = 'AUTH_SUCCESSED'
+export const AUTH_FAILED = 'AUTH_FAILED'
+export const AUTH_STARTED = 'AUTH_STARTED'
+
+export const AUTH_LOGOUT = 'AUTH_LOGOUT'
+
+interface logout {
+  type: typeof AUTH_LOGOUT,
+}
 
 interface addIngredient {
   type: typeof ADD_INGREDIENT,
@@ -106,6 +123,21 @@ interface fetchOrdersSuccessed {
   orders: Orders,
 }
 
+interface authStarted {
+  type: typeof AUTH_STARTED,
+}
+
+interface authFailed {
+  type: typeof AUTH_FAILED,
+  error: object,
+}
+
+interface authSuccessed {
+  type: typeof AUTH_SUCCESSED,
+  idToken: string,
+  localId: string,
+}
+
 export type BuilderAction = addIngredient
   | removeIngredient
   | setIngredients
@@ -117,3 +149,8 @@ export type OrderAction = purchaseBurgerStarted
   | fetchOrdersStarted
   | fetchOrdersSuccessed
   | fetchOrdersFailed
+
+export type AuthAction = authStarted
+  | authSuccessed
+  | authFailed
+  | logout
