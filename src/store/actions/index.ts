@@ -30,7 +30,7 @@ export const authenticate = ({ email, password, isLogin }: {email: string, passw
     setTimeout(() => {
       console.log('data', data)
       dispatch(logout())
-    }, expiresIn);
+    }, expiresIn * 1000);
   } catch (error) {
     dispatch(authFailed(error.response.data.error))
   }
@@ -46,10 +46,10 @@ export const initIngredients = (): types.AppThunk => async dispatch => {
   }
 }
 
-export const purchaseBurger = (order:types.Order, history: any): types.AppThunk => async dispatch => {
+export const purchaseBurger = (idToken:string, order:types.Order, history: any): types.AppThunk => async dispatch => {
   try {
     dispatch(purchaseBurgerStarted())
-    const response = await axios.post('https://react-burger-d4ed6.firebaseio.com/orders.json', order)
+    const response = await axios.post(`https://react-burger-d4ed6.firebaseio.com/orders.json?auth=${idToken}`, order)
     dispatch(purchaseBurgerSuccessed(order, response.data.name))
     history.push('/')
   } catch (error) {
@@ -57,10 +57,10 @@ export const purchaseBurger = (order:types.Order, history: any): types.AppThunk 
   }
 }
 
-export const fetchOrders = (): types.AppThunk => async dispatch => {
+export const fetchOrders = (idToken:string): types.AppThunk => async dispatch => {
   try {
     dispatch(fetchOrdersStarted())
-    const response = await axios.get('https://react-burger-d4ed6.firebaseio.com/orders.json')
+    const response = await axios.get(`https://react-burger-d4ed6.firebaseio.com/orders.json?auth=${idToken}`)
     const orders = []
     for (let key in response.data) {
       orders.push({ ...response.data[key], id: key })

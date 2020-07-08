@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 import axios from '../../axios-orders'
-import withError from '../../hoc/WithError'
+import WithError from '../../hoc/WithError'
 import Order from '../../components/Order'
 import * as types from '../../store/actions/types'
 import { AppState } from '../../store'
@@ -10,6 +10,7 @@ import { fetchOrders } from '../../store/actions/'
 export interface IOrdersProps {
   orders: types.Orders,
   loading: boolean,
+  idToken: string,
   fetchOrders: typeof fetchOrders,
 }
 
@@ -19,7 +20,7 @@ export interface IOrdersState {
 class Orders extends React.Component<IOrdersProps, IOrdersState> {
 
   componentDidMount() {
-    this.props.fetchOrders()
+    this.props.fetchOrders(this.props.idToken)
   }
 
   public render() {
@@ -38,4 +39,7 @@ class Orders extends React.Component<IOrdersProps, IOrdersState> {
   }
 }
 
-export default connect((state: AppState) => ({ ...state.order }), { fetchOrders })(withError(Orders, axios))
+export default connect(
+  (state: AppState) => ({ ...state.order, idToken: state.auth.idToken }),
+  { fetchOrders }
+)(WithError(Orders, axios))

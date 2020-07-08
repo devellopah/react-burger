@@ -19,6 +19,7 @@ interface IAppProps {
   loading: boolean,
   purchaseBurger: typeof purchaseBurger,
   history: any,
+  idToken: string,
 }
 
 const orderDataSchema = Yup.object().shape({
@@ -50,7 +51,7 @@ class ContactData extends React.Component<IAppProps> {
               onSubmit={(values, actions) => {
                 actions.setSubmitting(false);
                 const order: Order = { ingredients: this.props.ingredients, price: this.props.totalPrice, orderData: values }
-                this.props.purchaseBurger(order, this.props.history)
+                this.props.purchaseBurger(this.props.idToken, order, this.props.history)
               }}
             >
               {({ isSubmitting }) => (
@@ -128,6 +129,7 @@ const mapStateToProps = (state: AppState) => ({
   ingredients: state.builder.ingredients,
   totalPrice: state.builder.totalPrice,
   loading: state.order.loading,
+  idToken: state.auth.idToken,
 })
 
 export default withRouter(
