@@ -6,6 +6,7 @@ import Backdrop from '../../ui/Backdrop'
 
 interface ISideDrawerProps {
   open: boolean,
+  isAuth: boolean,
   closed: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void),
 }
 
@@ -24,7 +25,7 @@ const SideDrawer: React.FunctionComponent<ISideDrawerProps> = (props) => {
           <Logo />
         </div>
         <nav>
-          <NavItems />
+          <NavItems isAuth={props.isAuth} />
         </nav>
       </div>
     </>

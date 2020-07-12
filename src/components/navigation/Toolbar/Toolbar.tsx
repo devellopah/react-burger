@@ -6,6 +6,7 @@ import menuToggler from '../../../assets/images/menu-toggler.svg'
 
 export interface IToolbarProps {
   sideDrawerShowed: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void),
+  isAuth: boolean,
 }
 
 export default class Toolbar extends React.Component<IToolbarProps> {
@@ -19,7 +20,7 @@ export default class Toolbar extends React.Component<IToolbarProps> {
           <Logo />
         </div>
         <nav className={[classes.nav, classes.desktopOnly].join(' ')}>
-          <NavItems />
+          <NavItems isAuth={this.props.isAuth} />
         </nav>
       </header>
     );
