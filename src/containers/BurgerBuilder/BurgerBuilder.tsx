@@ -26,6 +26,7 @@ export interface IBurgerBuilderProps {
   ingredients: Ingredients,
   totalPrice: number,
   error: boolean,
+  isAuth: boolean,
   addIngredient: typeof addIngredient,
   removeIngredient: typeof removeIngredient,
   initIngredients: typeof initIngredients,
@@ -47,7 +48,9 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   }
 
   purchaseHandler = () => {
-    this.setState({ isPurchasing: true })
+    this.props.isAuth
+    ? this.setState({ isPurchasing: true })
+    : this.props.history.push('/auth')
   }
 
   purchaseCancelHander = () => {
@@ -74,6 +77,7 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
         price={this.props.totalPrice}
         isPurchasing={this.state.isPurchasing}
         ordered={this.purchaseHandler}
+        isAuth={this.props.isAuth}
       />
     </>
     const modal =
@@ -96,8 +100,8 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
   }
 }
 
-const mapStateToProps = (state:AppState) => ({ ...state.builder })
 
 export default withRouter(connect(
-  mapStateToProps, { addIngredient, removeIngredient, initIngredients }
+  (state: AppState) => ({ ...state.builder, isAuth: state.auth.idToken !== null }),
+  { addIngredient, removeIngredient, initIngredients }
 )(WithError(BurgerBuilder, axios)))

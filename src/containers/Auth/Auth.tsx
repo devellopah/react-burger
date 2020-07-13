@@ -6,11 +6,13 @@ import HashLoader from "react-spinners/HashLoader";
 import Button from '../../components/ui/Button'
 import { authenticate } from '../../store/actions'
 import { AppState } from '../../store';
+import { Redirect } from 'react-router-dom';
 
 interface IAuthProps {
   authenticate: any,
   isLoading: boolean,
   error: any | null,
+  isAuth: boolean,
 }
 
 interface IAuthState {
@@ -41,6 +43,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
     }
     return (
     <div>
+      {this.props.isAuth && <Redirect to="/" />}
       {this.props.error && <strong>{this.props.error.message}</strong>}
       {this.props.isLoading
           ? <HashLoader
@@ -102,4 +105,5 @@ export default connect(
   (state: AppState) => ({
     isLoading: state.auth.isLoading,
     error: state.auth.error,
+    isAuth: state.auth.idToken !== null,
   }), { authenticate })(Auth);

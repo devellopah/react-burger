@@ -17,6 +17,7 @@ export interface IControlsProps {
   ordered: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   price: number,
   isPurchasing: boolean,
+  isAuth: boolean,
 }
 
 export default function Controls (props: IControlsProps) {
@@ -36,7 +37,7 @@ export default function Controls (props: IControlsProps) {
         className={classes.OrderButton}
         onClick={props.ordered}
       >
-        Order now
+        {props.isAuth ? 'Order now': 'Sign in to order'}
       </button>
     </div>
   );

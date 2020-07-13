@@ -11,9 +11,12 @@ const NavItems: React.FunctionComponent<INavItemsProps> = (props) => {
       <li className={classes.item}>
         <NavLink exact to="/" className={classes.link} activeClassName={classes.link___active}>Burger Builder</NavLink>
       </li>
-      <li className={classes.item}>
-        <NavLink exact to="/orders" className={classes.link} activeClassName={classes.link___active}>Orders</NavLink>
-      </li>
+      {props.isAuth
+        ? <li className={classes.item}>
+          <NavLink exact to="/orders" className={classes.link} activeClassName={classes.link___active}>Orders</NavLink>
+        </li>
+        : null}
+
       {props.isAuth
         ? <li className={classes.item}>
           <NavLink exact to="/logout" className={classes.link} activeClassName={classes.link___active}>Logout</NavLink>
