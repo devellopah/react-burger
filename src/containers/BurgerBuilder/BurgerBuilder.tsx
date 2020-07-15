@@ -72,6 +72,7 @@ class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> 
     const content = <>
       <Burger ingredients={this.props.ingredients} />
       <Controls
+        ingredients={this.props.ingredients}
         ingredientAdded={this.props.addIngredient}
         ingredientRemoved={this.props.removeIngredient}
         price={this.props.totalPrice}

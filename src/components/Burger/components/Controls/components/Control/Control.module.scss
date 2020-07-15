@@ -6,7 +6,6 @@
 }
 
 button {
-  // display: block;
   font-family: inherit;
   padding: 5px;
   margin: 0 5px;
@@ -26,6 +25,7 @@ button {
     color: #ccc;
     cursor: not-allowed;
   }
+  // display: block;
 }
 
 .label {

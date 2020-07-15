@@ -13,6 +13,7 @@ interface IAuthProps {
   isLoading: boolean,
   error: any | null,
   isAuth: boolean,
+  totalPrice: number,
 }
 
 interface IAuthState {
@@ -43,7 +44,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
     }
     return (
     <div>
-      {this.props.isAuth && <Redirect to="/" />}
+      {this.props.isAuth && <Redirect to={this.props.totalPrice > 0 ? '/checkout' : '/'} />}
       {this.props.error && <strong>{this.props.error.message}</strong>}
       {this.props.isLoading
           ? <HashLoader
@@ -57,7 +58,6 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
               validationSchema={schema}
               onSubmit={(values, actions) => {
                 actions.setSubmitting(false);
-                console.log(values);
                 const { isLogin } = this.state
                 this.props.authenticate({ ...values, isLogin })
               }}
@@ -106,4 +106,5 @@ export default connect(
     isLoading: state.auth.isLoading,
     error: state.auth.error,
     isAuth: state.auth.idToken !== null,
+    totalPrice: state.builder.totalPrice,
   }), { authenticate })(Auth);

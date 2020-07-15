@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Control from './components/Control'
 import classes from './Controls.module.scss'
-
-type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
+import { Ingredient, Ingredients } from '../../../../store/actions/types'
 
 const controls :{label: string, type: Ingredient}[] = [
   {label: 'Salad', type: 'salad'},
@@ -12,6 +11,7 @@ const controls :{label: string, type: Ingredient}[] = [
 ]
 
 export interface IControlsProps {
+  ingredients: Ingredients,
   ingredientAdded: (type: Ingredient) => void,
   ingredientRemoved: (type: Ingredient) => void,
   ordered: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -21,6 +21,7 @@ export interface IControlsProps {
 }
 
 export default function Controls (props: IControlsProps) {
+
   return (
     <div className={classes.Controls}>
       <p>Current price: <strong>{props.price.toFixed(2)}$</strong></p>
@@ -28,6 +29,7 @@ export default function Controls (props: IControlsProps) {
         <Control
           key={item.label}
           label={item.label}
+          quantity={props.ingredients[item.type]}
           added={() => props.ingredientAdded(item.type)}
           removed={() => props.ingredientRemoved(item.type)}
         />
