@@ -20,7 +20,8 @@ export interface IOrdersState {
 class Orders extends React.Component<IOrdersProps, IOrdersState> {
 
   componentDidMount() {
-    this.props.fetchOrders(this.props.idToken)
+    // this.props.fetchOrders(this.props.idToken)
+    this.props.fetchOrders(localStorage.getItem('idToken'))
   }
 
   public render() {
