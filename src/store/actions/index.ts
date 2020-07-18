@@ -80,10 +80,16 @@ export const purchaseBurger = (idToken:string, order:types.Order, history: any):
   }
 }
 
-export const fetchOrders = (idToken:string|null): types.AppThunk => async dispatch => {
+export const fetchOrders = (idToken:string|null, localId:string): types.AppThunk => async dispatch => {
   try {
     dispatch(fetchOrdersStarted())
-    const response = await axios.get(`https://react-burger-d4ed6.firebaseio.com/orders.json?auth=${idToken}`)
+    const response = await axios.get('https://react-burger-d4ed6.firebaseio.com/orders.json', {
+      params: {
+        auth: idToken,
+        orderBy: '"localId"',
+        equalTo: `"${localId}"`,
+      }
+    })
     const orders = []
     for (let key in response.data) {
       orders.push({ ...response.data[key], id: key })

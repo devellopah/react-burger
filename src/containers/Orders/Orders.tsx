@@ -11,6 +11,7 @@ export interface IOrdersProps {
   orders: types.Orders,
   loading: boolean,
   idToken: string,
+  localId: string,
   fetchOrders: typeof fetchOrders,
 }
 
@@ -20,8 +21,7 @@ export interface IOrdersState {
 class Orders extends React.Component<IOrdersProps, IOrdersState> {
 
   componentDidMount() {
-    // this.props.fetchOrders(this.props.idToken)
-    this.props.fetchOrders(localStorage.getItem('idToken'))
+    this.props.fetchOrders(localStorage.getItem('idToken'), this.props.localId)
   }
 
   public render() {
@@ -41,6 +41,10 @@ class Orders extends React.Component<IOrdersProps, IOrdersState> {
 }
 
 export default connect(
-  (state: AppState) => ({ ...state.order, idToken: state.auth.idToken }),
+  (state: AppState) => ({
+    ...state.order,
+    idToken: state.auth.idToken,
+    localId: state.auth.localId
+  }),
   { fetchOrders }
 )(WithError(Orders, axios))

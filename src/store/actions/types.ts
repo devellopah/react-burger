@@ -29,6 +29,7 @@ export interface Order {
   id?: string,
   ingredients: Ingredients,
   price: number,
+  localId: string,
   orderData: object,
 }
 
