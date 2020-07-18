@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-// import { withRouter } from 'react-router'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Layout from  './hoc/Layout'
 import BurgerBuilder from './containers/BurgerBuilder'
@@ -9,10 +8,12 @@ import Orders from './containers/Orders'
 import Auth from './containers/Auth'
 import Logout from './containers/Logout'
 import { logInMaybe } from './store/actions'
+import { AppState } from './store'
 
 
 interface IAppProps {
   logInMaybe: any,
+  isAuth: boolean,
 }
 
 class App extends Component<IAppProps> {
@@ -21,21 +22,38 @@ class App extends Component<IAppProps> {
     this.props.logInMaybe()
   }
 
+  getRoutes = () => {
+    return this.props.isAuth
+    ? (
+        <Switch>
+          <Route exact path="/" component={BurgerBuilder}></Route>
+          <Route path="/orders" component={Orders}></Route>
+          <Route path="/checkout" component={Checkout}></Route>
+          <Route path="/logout" component={Logout}></Route>
+          <Redirect to="/"/>
+        </Switch>
+      )
+    : (
+      <Switch>
+        <Route exact path="/" component={BurgerBuilder}></Route>
+        <Route path="/auth" component={Auth}></Route>
+        <Redirect to="/"/>
+      </Switch>
+    )
+  }
+
   render() {
     return (
       <Router>
         <Layout>
-          <Switch>
-            <Route path="/auth" component={Auth}></Route>
-            <Route path="/logout" component={Logout}></Route>
-            <Route path="/checkout" component={Checkout}></Route>
-            <Route path="/orders" component={Orders}></Route>
-            <Route path="/" component={BurgerBuilder}></Route>
-          </Switch>
+          {this.getRoutes()}
         </Layout>
       </Router>
     )
   }
 }
 
-export default connect(null, { logInMaybe })(App)
+export default connect(
+  (state:AppState) => ({ isAuth: state.auth.idToken !== null }),
+  { logInMaybe }
+)(App)
