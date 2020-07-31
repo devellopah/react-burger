@@ -48,7 +48,6 @@ export const authenticate = ({ email, password, isLogin }: {email: string, passw
     const payload = { email, password, returnSecureToken: true}
     const { data: { localId, idToken, expiresIn } } = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:${isLogin ? 'signInWithPassword' : 'signUp'}?key=${API_KEY}`, payload)
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000)
-    console.log('expiration date', expirationDate)
     localStorage.setItem('idToken', idToken)
     localStorage.setItem('localId', localId)
     localStorage.setItem('expirationDate', '' + expirationDate)

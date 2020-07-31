@@ -8,12 +8,10 @@ function WithError(WrappedComponent, axios) {
     }
     componentDidMount() {
       this.reqInterceptors = axios.interceptors.request.use(req => {
-        console.log('req', req)
         this.setState({error: null})
         return req
       })
       this.resInterceptors = axios.interceptors.response.use(res => res, error => {
-        console.log('error', error)
         this.setState({error})
       })
     }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
+import HashLoader from "react-spinners/HashLoader";
 import axios from '../../axios-orders'
 import WithError from '../../hoc/WithError'
 import Order from '../../components/Order'
@@ -25,18 +26,20 @@ class Orders extends React.Component<IOrdersProps, IOrdersState> {
   }
 
   public render() {
-    return (
-      <div>
-        {this.props.orders.map(order =>
-          <Order
-            key={order.id}
-            price={+order.price}
-            ingredients={order.ingredients}
-            name={order.orderData.name}
-          />
-        )}
-      </div>
-    );
+    const orders = <div>
+      {this.props.orders.map(order =>
+        <Order
+          key={order.id}
+          price={+order.price}
+          ingredients={order.ingredients}
+          name={order.orderData.name}
+        />
+      )}
+    </div>
+
+    return this.props.loading
+      ? <HashLoader size={100} color={"#703b09"} />
+      : orders
   }
 }
 

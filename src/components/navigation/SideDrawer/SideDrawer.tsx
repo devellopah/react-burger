@@ -7,7 +7,7 @@ import Backdrop from '../../ui/Backdrop'
 interface ISideDrawerProps {
   open: boolean,
   isAuth: boolean,
-  closed: ((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void),
+  closed: ((event: React.MouseEvent<HTMLDivElement | HTMLUListElement, MouseEvent>) => void),
 }
 
 const SideDrawer: React.FunctionComponent<ISideDrawerProps> = (props) => {
@@ -20,7 +20,7 @@ const SideDrawer: React.FunctionComponent<ISideDrawerProps> = (props) => {
   return (
     <>
       <Backdrop show={props.open} clicked={props.closed} />
-      <div className={attachedClasses.join(' ')}>
+      <div className={attachedClasses.join(' ')} onClick={props.closed}>
         <div className={classes.logo}>
           <Logo />
         </div>
