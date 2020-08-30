@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { browserHistory } from 'react-router-dom'
 import { withRouter } from "react-router";
 import { connect } from 'react-redux'
@@ -9,7 +9,7 @@ import Burger from '../../components/Burger'
 import Controls from '../../components/Burger/components/Controls'
 import OrderSummary from '../../components/Burger/components/OrderSummary'
 import Modal from '../../components/ui/Modal'
-import WithError from '../../hoc/WithError'
+import withError from '../../hoc/withError'
 import { Ingredients } from '../../store/actions/types'
 import { addIngredient, removeIngredient, initIngredients } from '../../store/actions'
 import { AppState } from '../../store';
@@ -37,72 +37,71 @@ export interface IBurgerBuilderState {
   // loading: boolean,
 }
 
-class BurgerBuilder extends Component<IBurgerBuilderProps, IBurgerBuilderState> {
+const BurgerBuilder = (props: IBurgerBuilderProps, state: IBurgerBuilderState) => {
 
   state = {
     isPurchasing: false,
   }
 
-  componentDidMount() {
-    this.props.initIngredients();
+  const [isPurchasing, setisPurchasing] = useState(false)
+  const { initIngredients } = props
+
+  useEffect(() => { initIngredients() }, [initIngredients])
+
+  const purchaseHandler = () => {
+    props.isAuth
+    ? setisPurchasing(true)
+    : props.history.push('/auth')
   }
 
-  purchaseHandler = () => {
-    this.props.isAuth
-    ? this.setState({ isPurchasing: true })
-    : this.props.history.push('/auth')
+  const purchaseCancelHander = () => {
+    setisPurchasing(false)
   }
 
-  purchaseCancelHander = () => {
-    this.setState({ isPurchasing: false })
+  const purchaseContinueHandler = () => {
+    props.history.push('/checkout')
   }
 
-  purchaseContinueHandler = () => {
-    this.props.history.push('/checkout')
-  }
+  const orderSummary =
+    <OrderSummary
+      ingredients={props.ingredients}
+      continued={purchaseContinueHandler}
+      cancelled={purchaseCancelHander}
+      price={props.totalPrice}
+    />
+  const content = <>
+    <Burger ingredients={props.ingredients} />
+    <Controls
+      ingredients={props.ingredients}
+      ingredientAdded={props.addIngredient}
+      ingredientRemoved={props.removeIngredient}
+      price={props.totalPrice}
+      isPurchasing={isPurchasing}
+      ordered={purchaseHandler}
+      isAuth={props.isAuth}
+    />
+  </>
+  const modal =
+    <Modal show={isPurchasing} modalClosed={purchaseCancelHander}>
+      {orderSummary}
+    </Modal>
 
-  public render() {
-    const orderSummary =
-      <OrderSummary
-        ingredients={this.props.ingredients}
-        continued={this.purchaseContinueHandler}
-        cancelled={this.purchaseCancelHander}
-        price={this.props.totalPrice}
+  return (
+    <>
+      {props.ingredients && modal}
+      <HashLoader
+        css={override}
+        size={100}
+        color={"#703b09"}
+        loading={!props.ingredients}
       />
-    const content = <>
-      <Burger ingredients={this.props.ingredients} />
-      <Controls
-        ingredients={this.props.ingredients}
-        ingredientAdded={this.props.addIngredient}
-        ingredientRemoved={this.props.removeIngredient}
-        price={this.props.totalPrice}
-        isPurchasing={this.state.isPurchasing}
-        ordered={this.purchaseHandler}
-        isAuth={this.props.isAuth}
-      />
+      {props.ingredients && content}
     </>
-    const modal =
-      <Modal show={this.state.isPurchasing} modalClosed={this.purchaseCancelHander}>
-        {orderSummary}
-      </Modal>
-
-    return (
-      <>
-        {this.props.ingredients && modal}
-        <HashLoader
-          css={override}
-          size={100}
-          color={"#703b09"}
-          loading={!this.props.ingredients}
-        />
-        {this.props.ingredients && content}
-      </>
-    )
-  }
+  )
 }
 
 
 export default withRouter(connect(
   (state: AppState) => ({ ...state.builder, isAuth: state.auth.idToken !== null }),
   { addIngredient, removeIngredient, initIngredients }
-)(WithError(BurgerBuilder, axios)))
+)(withError(BurgerBuilder, axios)))

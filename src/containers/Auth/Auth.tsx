@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import * as Yup from 'yup';
 import { Formik, Form, Field, FieldProps } from 'formik';
@@ -27,28 +27,25 @@ const schema = Yup.object().shape({
 
 type MyFormValues = Yup.InferType<typeof schema>
 
-class Auth extends React.Component<IAuthProps, IAuthState> {
+const Auth = (props: IAuthProps) => {
 
-  state = {
-    isLogin: true,
+  const [ isLogin, setIsLogin ] = useState(true)
+
+  const switchAuthMode = () => {
+    setIsLogin(!isLogin)
   }
 
-  switchAuthMode = () => {
-    this.setState({ isLogin: !this.state.isLogin })
+  const initialValues: MyFormValues = {
+    email: '',
+    password: '',
   }
 
-  public render() {
-    const initialValues: MyFormValues = {
-      email: '',
-      password: '',
-    }
-    return (
+  return (
     <div>
-      {this.props.isAuth && <Redirect to={this.props.totalPrice > 0 ? '/checkout' : '/'} />}
-      {this.props.error && <strong>{this.props.error.message}</strong>}
-      {this.props.isLoading
+      {props.isAuth && <Redirect to={props.totalPrice > 0 ? '/checkout' : '/'} />}
+      {props.error && <strong>{props.error.message}</strong>}
+      {props.isLoading
           ? <HashLoader
-            // css={override}
             size={100}
             color={"#703b09"}
           />
@@ -58,8 +55,7 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
               validationSchema={schema}
               onSubmit={(values, actions) => {
                 actions.setSubmitting(false);
-                const { isLogin } = this.state
-                this.props.authenticate({ ...values, isLogin })
+                props.authenticate({ ...values, isLogin })
               }}
             >
               {({ isSubmitting, values }) => (
@@ -86,19 +82,18 @@ class Auth extends React.Component<IAuthProps, IAuthState> {
                       </div>
                     )}
                   </Field>
-                  <Button type="submit" disabled={isSubmitting} btnType="success">{this.state.isLogin ? 'Log in' : 'Create account'}</Button>
+                  <Button type="submit" disabled={isSubmitting} btnType="success">{isLogin ? 'Log in' : 'Create account'}</Button>
                   {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                 </Form>
               )}
             </Formik>
-            {this.state.isLogin
-              ? <div>Need an account? <Button btnType="success" clicked={this.switchAuthMode}>Sign up</Button></div>
-              : <div>Already have an account? <Button btnType="success" clicked={this.switchAuthMode}>Log in</Button></div>
+            {isLogin
+              ? <div>Need an account? <Button btnType="success" clicked={switchAuthMode}>Sign up</Button></div>
+              : <div>Already have an account? <Button btnType="success" clicked={switchAuthMode}>Log in</Button></div>
             }
           </div>}
     </div>
-    )
-  }
+  )
 };
 
 export default connect(

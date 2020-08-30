@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import Toolbar from '../../components/navigation/Toolbar'
 import SideDrawer from '../../components/navigation/SideDrawer'
@@ -10,42 +10,28 @@ export interface ILayoutProps {
   isAuth: boolean,
 }
 
-class Layout extends Component<ILayoutProps> {
-  state = {
-    isDrawerShowed: false,
-  }
+const Layout = (props: ILayoutProps) => {
 
-  sideDrawerCloseHandler = () => {
-    this.setState({
-      isDrawerShowed: false,
-    })
-  }
+  const [isDrawerShowed, showDrawer] = useState(false)
+  const sideDrawerCloseHandler = () => showDrawer(false)
+  const sideDrawerShowHandler = () => showDrawer(true)
 
-  sideDrawerShowHandler = () => {
-    this.setState({
-      isDrawerShowed: true,
-    })
-  }
-
-  render() {
-
-    return (
-      <>
-        <Toolbar
-          sideDrawerShowed={this.sideDrawerShowHandler}
-          isAuth={this.props.isAuth}
-        />
-        <SideDrawer
-          open={this.state.isDrawerShowed}
-          isAuth={this.props.isAuth}
-          closed={this.sideDrawerCloseHandler}
-        />
-        <main className={classes.content}>
-          {this.props.children}
-        </main>
-      </>
-    );
-  }
+  return (
+    <>
+      <Toolbar
+        sideDrawerShowed={sideDrawerShowHandler}
+        isAuth={props.isAuth}
+      />
+      <SideDrawer
+        open={isDrawerShowed}
+        isAuth={props.isAuth}
+        closed={sideDrawerCloseHandler}
+      />
+      <main className={classes.content}>
+        {props.children}
+      </main>
+    </>
+  );
 }
 
 export default connect(

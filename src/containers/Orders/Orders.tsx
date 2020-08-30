@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import HashLoader from "react-spinners/HashLoader";
 import axios from '../../axios-orders'
-import WithError from '../../hoc/WithError'
+import withError from '../../hoc/withError'
 import Order from '../../components/Order'
 import * as types from '../../store/actions/types'
 import { AppState } from '../../store'
@@ -16,31 +16,24 @@ export interface IOrdersProps {
   fetchOrders: typeof fetchOrders,
 }
 
-export interface IOrdersState {
-}
+const Orders = ({ orders, loading, localId, fetchOrders }: IOrdersProps) => {
 
-class Orders extends React.Component<IOrdersProps, IOrdersState> {
+  useEffect(() => {
+    fetchOrders(localStorage.getItem('idToken'), localId)
+  }, [fetchOrders, localId])
 
-  componentDidMount() {
-    this.props.fetchOrders(localStorage.getItem('idToken'), this.props.localId)
-  }
-
-  public render() {
-    const orders = <div>
-      {this.props.orders.map(order =>
-        <Order
-          key={order.id}
-          price={+order.price}
-          ingredients={order.ingredients}
-          name={order.orderData.name}
-        />
-      )}
-    </div>
-
-    return this.props.loading
-      ? <HashLoader size={100} color={"#703b09"} />
-      : orders
-  }
+  return loading
+    ? <HashLoader size={100} color={"#703b09"} />
+    : <div>
+        {orders.map(order =>
+          <Order
+            key={order.id}
+            price={+order.price}
+            ingredients={order.ingredients}
+            name={order.orderData.name}
+          />
+        )}
+      </div>
 }
 
 export default connect(
@@ -50,4 +43,4 @@ export default connect(
     localId: state.auth.localId
   }),
   { fetchOrders }
-)(WithError(Orders, axios))
+)(withError(Orders, axios))

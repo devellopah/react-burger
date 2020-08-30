@@ -16,19 +16,17 @@ export interface ICheckoutProps {
   totalPrice: number,
 }
 
-class Checkout extends React.Component<ICheckoutProps> {
-  handleSummaryContinue = () => {
-    this.props.history.push({ pathname: `${this.props.history.location.pathname}/contact-data` })
+const Checkout = (props: ICheckoutProps) => {
+  const handleSummaryContinue = () => {
+    props.history.push({ pathname: `${props.history.location.pathname}/contact-data` })
   }
 
-  render() {
-    return this.props.ingredients ? (
-      <>
-        <CheckoutSummary ingredients={this.props.ingredients} clicked={this.handleSummaryContinue}/>
-        <Route path={this.props.match.path + '/contact-data'} component={ContactData} />
-      </>
-    ) : <Redirect to="/" />;
-  }
+  return props.ingredients ? (
+    <>
+      <CheckoutSummary ingredients={props.ingredients} clicked={handleSummaryContinue}/>
+      <Route path={props.match.path + '/contact-data'} component={ContactData} />
+    </>
+  ) : <Redirect to="/" />
 }
 
 const mapStateToProps = (state: AppState) => ({

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom';
 import { logout } from '../../store/actions/index'
@@ -8,14 +8,11 @@ export interface ILogoutProps {
   logout: typeof logout,
 }
 
-class Logout extends React.Component<ILogoutProps> {
-  componentDidMount() {
-    this.props.logout()
-  }
+const Logout = ({ logout }: ILogoutProps) => {
 
-  render() {
-    return <Redirect to="/" />
-  }
+  useEffect(() => { logout() }, [logout])
+
+  return <Redirect to="/" />
 }
 
 export default connect(
