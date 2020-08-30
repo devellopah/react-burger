@@ -38,11 +38,6 @@ export interface IBurgerBuilderState {
 }
 
 const BurgerBuilder = (props: IBurgerBuilderProps, state: IBurgerBuilderState) => {
-
-  state = {
-    isPurchasing: false,
-  }
-
   const [isPurchasing, setisPurchasing] = useState(false)
   const { initIngredients } = props
 
