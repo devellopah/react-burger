@@ -1,7 +1,6 @@
 import React from 'react';
-// import Ingredient from '../Ingredient';
-import Button from '../../../ui/Button'
 
+import Button from '../../../ui/Button'
 import { Ingredient, Ingredients } from '../../../../store/actions/types'
 
 interface IOrderSummaryProps {

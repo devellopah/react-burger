@@ -8,7 +8,7 @@ export interface IBurgerProps {
   ingredients: Ingredients,
 }
 
-export default function Burger (props: IBurgerProps) {
+const Burger = (props: IBurgerProps) => {
   let ingredients: (JSX.Element[] | JSX.Element) = Object.keys(props.ingredients)
     .map(key => [
       ...Array(props.ingredients[key as IngredientType])].map((_, i) =>
@@ -26,3 +26,5 @@ export default function Burger (props: IBurgerProps) {
     </div>
   );
 }
+
+export default Burger

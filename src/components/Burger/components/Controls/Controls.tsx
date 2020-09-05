@@ -20,7 +20,7 @@ export interface IControlsProps {
   isAuth: boolean,
 }
 
-export default function Controls (props: IControlsProps) {
+const Controls = (props: IControlsProps) => {
 
   return (
     <div className={classes.Controls}>
@@ -44,3 +44,5 @@ export default function Controls (props: IControlsProps) {
     </div>
   );
 }
+
+export default Controls

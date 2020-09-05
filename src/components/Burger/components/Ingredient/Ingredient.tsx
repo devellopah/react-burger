@@ -5,7 +5,7 @@ export interface IIngredientProps {
   type: string,
 }
 
-export default function Ingredient (props: IIngredientProps) {
+const Ingredient = (props: IIngredientProps) => {
   let item = null
 
   switch (props.type) {
@@ -38,3 +38,5 @@ export default function Ingredient (props: IIngredientProps) {
 
   return item;
 }
+
+export default Ingredient

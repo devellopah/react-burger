@@ -9,7 +9,7 @@ export interface IControlProps {
   removed: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
-export default function Control (props: IControlProps) {
+const Control = (props: IControlProps) => {
   return (
     <div className={classes.Control}>
       <div className={classes.label}>{props.label}</div>
@@ -18,3 +18,5 @@ export default function Control (props: IControlProps) {
     </div>
   );
 }
+
+export default Control
