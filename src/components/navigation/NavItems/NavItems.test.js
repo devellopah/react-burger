@@ -22,4 +22,3 @@ describe('<NavItems />', () => {
     expect(wrapper.find(NavLink)).toHaveLength(3)
   })
 })
-
