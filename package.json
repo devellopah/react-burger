@@ -27,8 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "firebase deploy",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/registerServiceWorker.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "@types/yup": "^0.29.3",
+    "codecov.io": "^0.1.6",
+    "coveralls": "^3.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4"
   }
