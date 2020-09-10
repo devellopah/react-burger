@@ -7,3 +7,9 @@ node_js:
 branches:
   only:
     - master
+
+deploy:
+  provider: heroku
+  app: "my-react-burger"
+  api_key:
+    secure: $HEROKU_API_KEY
