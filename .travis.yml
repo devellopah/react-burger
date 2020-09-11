@@ -10,7 +10,8 @@ branches:
 
 deploy:
   provider: heroku
-  app: "my-react-burger"
+  app: my-react-burger
+  strategy: git
   api_key:
     secure: $HEROKU_API_KEY
 
