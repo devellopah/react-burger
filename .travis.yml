@@ -11,9 +11,10 @@ branches:
 deploy:
   provider: heroku
   app: my-react-burger
-  strategy: git
   api_key:
     secure: $HEROKU_API_KEY
+  on:
+    repo: devellopah/react-burger
 
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
