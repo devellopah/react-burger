@@ -12,9 +12,7 @@ deploy:
   provider: heroku
   app: my-react-burger
   api_key:
-    secure: $HEROKU_API_KEY
-  on:
-    repo: devellopah/react-burger
+    secure: "0de1a7af-e6a6-4ceb-ad02-7f162848f7d7"
 
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
