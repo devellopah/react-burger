@@ -1,19 +1,14 @@
-sudo: false
-
 language: node_js
 node_js:
   - 10
-
 branches:
   only:
     - master
-
 deploy:
   provider: heroku
   app: my-react-burger
   api_key:
-    secure: "0de1a7af-e6a6-4ceb-ad02-7f162848f7d7"
-
+    secure: $HEROKU_API_KEY
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
