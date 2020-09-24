@@ -8,6 +8,7 @@ deploy:
   provider: heroku
   skip_cleanup: true
   app: my-react-burger
+  strategy: git
   api_key:
     secure: $HEROKU_API_KEY
 after_success:
