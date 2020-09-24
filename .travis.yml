@@ -6,6 +6,7 @@ branches:
     - master
 deploy:
   provider: heroku
+  skip_cleanup: true
   app: my-react-burger
   api_key:
     secure: $HEROKU_API_KEY
