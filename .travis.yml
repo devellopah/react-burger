@@ -6,7 +6,6 @@ branches:
     - master
 deploy:
   provider: firebase
-  app: my-react-burger
   token: $FIREBASE_TOKEN
 after_success:
   - cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js
