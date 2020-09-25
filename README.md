@@ -3,7 +3,7 @@
 [![Coveralls][coveralls-badge]][coveralls]
 
 [build-badge]: https://img.shields.io/travis/devellopah/react-burger/master.png?style=flat-square
-[build]: https://travis-ci.org/devellopah/react-burger
+[build]: https://travis-ci.com/devellopah/react-burger
 
 [coveralls-badge]: https://img.shields.io/coveralls/devellopah/react-burger/master.png?style=flat-square
 [coveralls]: https://coveralls.io/github/devellopah/react-burger
