@@ -2,10 +2,10 @@
 [![Travis][build-badge]][build]
 [![Coveralls][coveralls-badge]][coveralls]
 
-[build-badge]: https://img.shields.io/travis/devellopah/react-burger/master.png?style=flat-square
+[build-badge]: https://travis-ci.com/devellopah/react-burger.svg?branch=master
 [build]: https://travis-ci.com/devellopah/react-burger
 
-[coveralls-badge]: https://img.shields.io/coveralls/devellopah/react-burger/master.png?style=flat-square
+[coveralls-badge]: https://img.shields.io/coveralls/devellopah/react-burger/master.svg?style=flat-square
 [coveralls]: https://coveralls.io/github/devellopah/react-burger
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
