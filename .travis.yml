@@ -10,7 +10,7 @@ cache:
 before_deploy:
   - npm run build
 deploy:
-  cleanup: false
+  skip_cleanup: true
   provider: firebase
   token: "$FIREBASE_TOKEN"
 after_success:
