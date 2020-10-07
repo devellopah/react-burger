@@ -10,8 +10,10 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "axios": "^0.19.1",
-    "formik": "^2.1.4",
-    "i18next": "^19.7.0",
+    "formik": "^2.1.7",
+    "i18next": "^19.8.1",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "i18next-http-backend": "^1.0.21",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,10 +31,52 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "test": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/registerServiceWorker.js"
+    "test": "react-scripts test --env=jsdom --coverage --runInBand --watchAll=false"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/index.tsx",
+      "!src/serviceWorker.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "./src/*/*.types.{ts,tsx}",
+      "./src/index.tsx",
+      "./src/serviceWorker.ts"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text-summary",
+      "clover"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 0,
+        "branches": 0,
+        "lines": 0,
+        "functions": 0
+      }
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "src/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "browserslist": {
     "production": [
@@ -47,10 +91,14 @@
     ]
   },
   "devDependencies": {
-    "@types/yup": "^0.29.3",
-    "codecov.io": "^0.1.6",
+    "@types/enzyme": "3.10.7",
+    "@types/enzyme-adapter-react-16": "1.0.6",
+    "@types/yup": "^0.29.7",
     "coveralls": "^3.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.4"
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.5",
+    "enzyme-to-json": "3.6.1",
+    "jest-fetch-mock": "3.0.3",
+    "ts-jest": "24.3.0"
   }
 }

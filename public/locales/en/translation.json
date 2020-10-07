@@ -1,0 +1,45 @@
+{
+  "builder": {
+    "title": "Please, start adding ingredients!",
+    "price": "Current price:"
+  },
+  "ingredients": {
+    "salad": "salad",
+    "bacon": "bacon",
+    "cheese": "cheese",
+    "meat": "meat"
+  },
+  "controls" : {
+    "less": "less",
+    "more": "more"
+  },
+  "claims": {
+    "signinOrder": "Sign in to order",
+    "nowOrder": "Order now"
+  },
+  "nav": {
+    "builder": "Burger Builder",
+    "auth": "Auth",
+    "orders": "Orders",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Log in",
+    "signup": "Sign up",
+    "account": {
+      "create": "Create an account",
+      "need": "Need an account",
+      "have": "Already have an account?"
+    }
+  },
+  "form": {
+    "email": {
+      "label": "Email",
+      "placeholder": "Your Email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Your Password"
+    }
+  }
+}

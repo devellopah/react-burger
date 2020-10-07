@@ -1,4 +1,6 @@
-import * as React from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next';
+
 import classes from './Burger.module.scss'
 import Ingredient from './components/Ingredient'
 import { Ingredient as IngredientType, Ingredients } from '../../store/actions/types'
@@ -9,6 +11,8 @@ export interface IBurgerProps {
 }
 
 const Burger = (props: IBurgerProps) => {
+  const { t } = useTranslation()
+
   let ingredients: (JSX.Element[] | JSX.Element) = Object.keys(props.ingredients)
     .map(key => [
       ...Array(props.ingredients[key as IngredientType])].map((_, i) =>
@@ -16,7 +20,7 @@ const Burger = (props: IBurgerProps) => {
     )
     .reduce((arr, el) => arr.concat(el), [])
 
-  if (ingredients.length === 0) ingredients = <p>Please, start adding ingredients!</p>
+    if (ingredients.length === 0) ingredients = <p>{t('builder.title')}</p>
 
   return (
     <div className={classes.Burger}>

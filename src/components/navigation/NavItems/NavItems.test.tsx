@@ -4,13 +4,13 @@ import Adapter from 'enzyme-adapter-react-16'
 import { NavLink } from 'react-router-dom'
 
 import NavItems from './NavItems'
-configure({adapter: new Adapter()})
+configure({ adapter: new Adapter() })
 
 describe('<NavItems />', () => {
-  let wrapper
+  let wrapper: any
 
   beforeEach(() => {
-    wrapper = shallow(<NavItems />)
+    wrapper = shallow(<NavItems isAuth={false} />)
   })
 
   it('should render two <NavLink /> elements if not authenticated', () => {
@@ -18,7 +18,7 @@ describe('<NavItems />', () => {
   })
 
   it('should render three <NavLink /> elements if authenticated', () => {
-    wrapper.setProps({isAuth: true})
+    wrapper.setProps({ isAuth: true })
     expect(wrapper.find(NavLink)).toHaveLength(3)
   })
 })

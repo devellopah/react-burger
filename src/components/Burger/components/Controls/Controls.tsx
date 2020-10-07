@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next'
 import Control from './components/Control'
 import classes from './Controls.module.scss'
 import { Ingredient, Ingredients } from '../../../../store/actions/types'
@@ -21,10 +22,11 @@ export interface IControlsProps {
 }
 
 const Controls = (props: IControlsProps) => {
+  const { t } = useTranslation()
 
   return (
     <div className={classes.Controls}>
-      <p>Current price: <strong>{props.price.toFixed(2)}$</strong></p>
+      <p>{t('builder.price')} <strong>{props.price.toFixed(2)}$</strong></p>
       {controls.map(item =>
         <Control
           key={item.label}
@@ -39,7 +41,7 @@ const Controls = (props: IControlsProps) => {
         className={classes.OrderButton}
         onClick={props.ordered}
       >
-        {props.isAuth ? 'Order now': 'Sign in to order'}
+        {props.isAuth ? t('claims.nowOrder') : t('claims.signinOrder')}
       </button>
     </div>
   );
