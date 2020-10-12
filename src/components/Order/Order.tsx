@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next'
+
 import classes from './Order.module.scss';
 
 type Ingredient = 'salad' | 'bacon' | 'cheese' | 'meat'
@@ -22,15 +24,17 @@ const Order: React.FunctionComponent<IOrderProps> = (props) => {
     )
   }
 
+  const { t } = useTranslation()
+
   return (
     <div className={classes.Order}>
-      <p>Name: {props.name}</p>
-      <p>Ingredients: {
+      <p>{t('order.name')}{props.name}</p>
+      <p>{t('order.ingredients')}{
         ingredients.map((ig, i) =>
-          <span key={ig.name}>{ig.name}({ig.amount}){i < (ingredients.length - 1) && ', '}</span>
+          <span key={ig.name}>{t(`ingredients.${ig.name}`)}({ig.amount}){i < (ingredients.length - 1) && ', '}</span>
         )}
       </p>
-      <p>Price: <strong>{props.price.toFixed(2)}$</strong></p>
+      <p>{t('order.price')}<strong>{props.price.toFixed(2)}$</strong></p>
     </div>
   );
 };

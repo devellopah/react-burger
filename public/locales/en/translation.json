@@ -41,5 +41,10 @@
       "label": "Password",
       "placeholder": "Your Password"
     }
+  },
+  "order": {
+    "name": "Name: ",
+    "ingredients": "Ingredients: ",
+    "price": "Price: "
   }
 }

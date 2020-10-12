@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 
 import Layout from  './hoc/Layout'
 import { logInMaybe } from './store/actions'
@@ -20,9 +19,6 @@ interface IAppProps {
 
 const App = ({ logInMaybe, isAuth } :IAppProps) => {
 
-  const { i18n } = useTranslation()
-  const changeLanguage = (lang: string) => i18n.changeLanguage(lang)
-
   useEffect(() => {
     logInMaybe()
   }, [logInMaybe])
@@ -31,8 +27,6 @@ const App = ({ logInMaybe, isAuth } :IAppProps) => {
     <Router>
       <Layout>
         <Suspense fallback={<div>Загрузка...</div>}>
-          <button onClick={() => changeLanguage('en')}>EN</button>
-          <button onClick={() => changeLanguage('ru')}>RU</button>
           <Switch>
             {isAuth && <Route path="/logout" component={Logout} />}
             <Route path="/auth" component={Auth} />

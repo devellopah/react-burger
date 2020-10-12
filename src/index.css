@@ -27,3 +27,14 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.menu-flags .flag-select__btn {
+  color: white;
+}
+.menu-flags .flag-select__btn:after {
+  border-top-color: white;
+}
+
+.menu-flags .flag-select__btn[aria-expanded="true"]:after {
+  border-bottom-color: white;
+}
