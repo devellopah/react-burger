@@ -1,7 +1,8 @@
 {
   "builder": {
-    "title": "Please, start adding ingredients!",
-    "price": "Current price:"
+    "title": "Add ingredients!",
+    "price": "Current price:",
+    "checkout": "We hope it tastes well!"
   },
   "ingredients": {
     "salad": "salad",
@@ -46,5 +47,10 @@
     "name": "Name: ",
     "ingredients": "Ingredients: ",
     "price": "Price: "
+  },
+  "actions": {
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "order": "Order"
   }
 }

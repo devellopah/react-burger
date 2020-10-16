@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import Button from '../../../ui/Button'
 import { Ingredient, Ingredients } from '../../../../store/actions/types'
@@ -11,6 +12,8 @@ interface IOrderSummaryProps {
 }
 
 const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
+  const { t } = useTranslation()
+
   const ingredientSummary = Object.keys(props.ingredients)
     .map((key) => {
         const ingredient = key as Ingredient
@@ -27,11 +30,11 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
         {ingredientSummary}
       </ul>
       <p>Total price: <strong>{props.price.toFixed(2)}$</strong></p>
-      <p>Continue to checkout?</p>
-      <Button btnType="danger" clicked={props.cancelled}>Cancel</Button>
-      <Button btnType="success" clicked={props.continued}>Continue</Button>
+      <p>{t('actions.continue')} to checkout?</p>
+      <Button btnType="danger" clicked={props.cancelled}>{t('actions.cancel')}</Button>
+      <Button btnType="success" clicked={props.continued}>{t('actions.continue')}</Button>
     </>
-  );
-};
+  )
+}
 
-export default OrderSummary;
+export default OrderSummary

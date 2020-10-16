@@ -33,18 +33,17 @@ const NavItems: React.FunctionComponent<INavItemsProps> = (props) => {
           <NavLink exact to="/auth" className={classes.link} activeClassName={classes.link___active}>{t('nav.auth')}</NavLink>
         </li>}
 
-      <li className={classes.item}>
-        <ReactFlagsSelect
-          defaultCountry="US"
-          className="menu-flags"
-          countries={["US", "RU"]}
-          customLabels={{ "US": "EN-US", "RU": "RU" }}
-          onSelect={(countryCode:string) => changeLanguage(countryCode === 'US' ? 'en' : 'ru')}
-          showSelectedLabel={false}
-          showOptionLabel={false}
-        />
-      </li>
-
+        <li className={classes.item}>
+          <ReactFlagsSelect
+            defaultCountry="US"
+            className="menu-flags"
+            countries={["US", "RU"]}
+            customLabels={{ "US": "EN-US", "RU": "RU" }}
+            onSelect={(countryCode: string) => changeLanguage(countryCode === 'US' ? 'en' : 'ru')}
+            showSelectedLabel={false}
+            showOptionLabel={false}
+          />
+        </li>
     </ul>
   )
 }
