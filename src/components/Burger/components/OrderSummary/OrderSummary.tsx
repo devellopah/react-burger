@@ -18,19 +18,19 @@ const OrderSummary: React.FunctionComponent<IOrderSummaryProps> = (props) => {
     .map((key) => {
         const ingredient = key as Ingredient
         return (
-          <li key={ingredient}><span>{ingredient}</span>: {props.ingredients[ingredient]}</li>
+          <li key={ingredient}><span>{t(`ingredients.${ingredient}`)}</span>: {props.ingredients[ingredient]}</li>
         )
       })
 
   return (
     <>
-      <h3>Your Order</h3>
-      <p>A delicious burger with the following ingredients:</p>
+      <h3>{t('precheckout.title')}</h3>
+      <p>{t('precheckout.text')}</p>
       <ul>
         {ingredientSummary}
       </ul>
-      <p>Total price: <strong>{props.price.toFixed(2)}$</strong></p>
-      <p>{t('actions.continue')} to checkout?</p>
+      <p>{t('precheckout.price')} <strong>{props.price.toFixed(2)}$</strong></p>
+      <p>{t('precheckout.continue')}</p>
       <Button btnType="danger" clicked={props.cancelled}>{t('actions.cancel')}</Button>
       <Button btnType="success" clicked={props.continued}>{t('actions.continue')}</Button>
     </>

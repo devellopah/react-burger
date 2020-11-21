@@ -34,6 +34,10 @@
     }
   },
   "form": {
+    "name": {
+      "label": "Имя",
+      "placeholder": "Ваше имя"
+    },
     "email": {
       "label": "Емайл",
       "placeholder": "Ваш Емайл"
@@ -41,6 +45,18 @@
     "password": {
       "label": "Пароль",
       "placeholder": "Ваш Пароль"
+    },
+    "address": {
+      "label": "Адрес",
+      "placeholder": "Ваш адрес"
+    },
+    "postal": {
+      "label": "Индекс",
+      "placeholder": "Ваш индекс"
+    },
+    "delivery": {
+      "label": "Способ доставки",
+      "placeholder": "Способ доставки"
     }
   },
   "order": {
@@ -52,5 +68,11 @@
     "cancel": "Отменить",
     "continue": "Продолжить",
     "order": "заказать"
+  },
+  "precheckout": {
+    "title": "Ваш заказ",
+    "text": "Вкуснейший бургер из следующих ингредиентов:",
+    "price": "Итоговая цена:",
+    "continue": "Перейти к оформлению?"
   }
 }
