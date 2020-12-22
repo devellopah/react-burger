@@ -64,12 +64,19 @@ const ContactData = (props: IAppProps) => {
             }}
           >
             {({ isSubmitting }) => (
-              <Form translate="yes">
+              <Form translate="yes" className="form">
                 <Field name="name">
                   {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                    <div>
-                      <label htmlFor={field.name}>{t('form.name.label')}</label>
-                      <input type="text" {...field} placeholder={t('form.name.placeholder')} id={field.name} disabled={isSubmitting} />
+                    <div className="form__field">
+                    <label htmlFor={field.name} className="form__label">{t('form.name.label')}</label>
+                      <input
+                        type="text"
+                        className="form__control"
+                        placeholder={t('form.name.placeholder')}
+                        id={field.name}
+                        disabled={isSubmitting}
+                        {...field}
+                      />
                       {meta.touched && meta.error && (
                         <div className="error">{meta.error}</div>
                       )}
@@ -78,9 +85,16 @@ const ContactData = (props: IAppProps) => {
                 </Field>
                 <Field name="email">
                   {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                    <div>
-                    <label htmlFor={field.name}>{t('form.email.label')}</label>
-                    <input type="email" {...field} placeholder={t('form.email.placeholder')} id={field.name} disabled={isSubmitting} />
+                    <div className="form__field">
+                    <label htmlFor={field.name} className="form__label">{t('form.email.label')}</label>
+                    <input
+                      type="email"
+                      className="form__control"
+                      placeholder={t('form.email.placeholder')}
+                      id={field.name}
+                      disabled={isSubmitting}
+                      {...field}
+                    />
                       {meta.touched && meta.error && (
                         <div className="error">{meta.error}</div>
                       )}
@@ -89,9 +103,16 @@ const ContactData = (props: IAppProps) => {
                 </Field>
                 <Field name="street">
                   {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                    <div>
-                      <label htmlFor={field.name}>{t('form.address.label')}</label>
-                      <input type="text" {...field} placeholder={t('form.address.placeholder')} id={field.name} disabled={isSubmitting} />
+                    <div className="form__field">
+                      <label htmlFor={field.name} className="form__label">{t('form.address.label')}</label>
+                      <input
+                        type="text"
+                        className="form__control"
+                        placeholder={t('form.address.placeholder')}
+                        id={field.name}
+                        disabled={isSubmitting}
+                        {...field}
+                      />
                       {meta.touched && meta.error && (
                         <div className="error">{meta.error}</div>
                       )}
@@ -100,9 +121,16 @@ const ContactData = (props: IAppProps) => {
                 </Field>
                 <Field name="postal">
                   {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                    <div>
-                      <label htmlFor={field.name}>{t('form.postal.label')}</label>
-                      <input type="text" {...field} placeholder={t('form.postal.placeholder')} id={field.name} disabled={isSubmitting} />
+                    <div className="form__field">
+                      <label htmlFor={field.name} className="form__label">{t('form.postal.label')}</label>
+                      <input
+                        type="text"
+                        className="form__control"
+                        placeholder={t('form.postal.placeholder')}
+                        id={field.name}
+                        disabled={isSubmitting}
+                        {...field}
+                      />
                         {meta.touched && meta.error && (
                           <div className="error">{meta.error}</div>
                         )}
@@ -111,9 +139,13 @@ const ContactData = (props: IAppProps) => {
                 </Field>
                 <Field name="deliveryMethod">
                 {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                  <div>
-                    <label htmlFor={field.name}>{t('form.delivery.label')}</label>
-                    <select {...field} id={field.name} disabled={isSubmitting}>
+                  <div className="form__field">
+                    <label htmlFor={field.name} className="form__label">{t('form.delivery.label')}</label>
+                    <select
+                      id={field.name}
+                      disabled={isSubmitting}
+                      {...field}
+                    >
                       <option value="fastest">fastest</option>
                       <option value="cheapest">cheapest</option>
                     </select>

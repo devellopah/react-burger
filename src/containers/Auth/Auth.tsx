@@ -45,7 +45,7 @@ const Auth = (props: IAuthProps) => {
   }
 
   return (
-    <div>
+    <>
       {props.isAuth && <Redirect to={props.totalPrice > 0 ? '/checkout' : '/'} />}
       {props.error && <strong>{props.error.message}</strong>}
       {props.isLoading
@@ -53,7 +53,7 @@ const Auth = (props: IAuthProps) => {
             size={100}
             color={"#703b09"}
           />
-          : <div>
+          : <div className="form">
             <Formik
               initialValues={initialValues}
               validationSchema={schema}
@@ -63,12 +63,19 @@ const Auth = (props: IAuthProps) => {
               }}
             >
               {({ isSubmitting, values }) => (
-                <Form translate="yes">
+              <Form translate="yes" className="form__form">
                   <Field name="email">
                     {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                      <div>
-                        <label htmlFor={field.name}>{t('form.email.label')}</label>
-                        <input type="email" {...field} placeholder={t('form.email.placeholder')} id={field.name} disabled={isSubmitting} />
+                      <div className="form__field">
+                        <label htmlFor={field.name} className="form__label">{t('form.email.label')}</label>
+                        <input
+                          type="email"
+                          className="form__control"
+                          placeholder={t('form.email.placeholder')}
+                          id={field.name}
+                          disabled={isSubmitting}
+                          {...field}
+                        />
                         {meta.touched && meta.error && (
                           <div className="error">{meta.error}</div>
                         )}
@@ -77,9 +84,16 @@ const Auth = (props: IAuthProps) => {
                   </Field>
                   <Field name="password">
                     {({ field, form: { isSubmitting }, meta }: FieldProps) => (
-                      <div>
-                        <label htmlFor={field.name}>{t('form.password.label')}</label>
-                        <input type="password" {...field} placeholder={t('form.password.placeholder')} id={field.name} disabled={isSubmitting} />
+                      <div className="form__field">
+                        <label htmlFor={field.name} className="form__label">{t('form.password.label')}</label>
+                        <input
+                          type="password"
+                          className="form__control"
+                          placeholder={t('form.password.placeholder')}
+                          id={field.name}
+                          disabled={isSubmitting}
+                          {...field}
+                        />
                         {meta.touched && meta.error && (
                           <div className="error">{meta.error}</div>
                         )}
@@ -96,7 +110,7 @@ const Auth = (props: IAuthProps) => {
               : <div>{t('auth.account.have')} <Button btnType="success" clicked={switchAuthMode}>{t('auth.login')}</Button></div>
             }
           </div>}
-    </div>
+    </>
   )
 }
 

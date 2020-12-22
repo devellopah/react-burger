@@ -17,7 +17,7 @@ export interface ICheckoutProps {
 }
 
 const Checkout = (props: ICheckoutProps) => {
-  const handleSummaryContinue = () => {
+  const handleSummaryContinue = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     props.history.push({ pathname: `${props.history.location.pathname}/contact-data` })
   }
 
